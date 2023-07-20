@@ -1,16 +1,11 @@
-import {
-  SignInButton,
-  SignOutButton,
-  SignedIn,
-  SignedOut,
-  useUser,
-} from '@clerk/nextjs';
-import styles from './index.module.css';
+import { SignInButton, SignedIn, SignedOut, useUser } from '@clerk/nextjs';
+// import styles from './index.module.css';
 import Head from 'next/head';
-import Link from 'next/link';
+// import Link from 'next/link';
 import { api } from '~/utils/api';
 import type { RouterOutputs } from '~/utils/api';
 import Image from 'next/image';
+import { LoadingSpinner } from '~/components/loading';
 
 const AddBusinessWizard = () => {
   const { user } = useUser();
@@ -47,13 +42,28 @@ const BusinessView = (props: BusinessWithUser) => {
   );
 };
 
-export default function Home() {
-  const user = useUser();
+const Listing = () => {
   const { data, isLoading } = api.businesses.getAll.useQuery();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingSpinner size={24} />;
 
   if (!data) return <div>Something went wrong</div>;
+
+  return (
+    <div>
+      {data.map((fullListing) => (
+        <BusinessView key={fullListing.business.id} {...fullListing} />
+      ))}
+    </div>
+  );
+};
+
+export default function Home() {
+  const { isLoaded: userLoaded } = useUser();
+
+  api.businesses.getAll.useQuery();
+
+  if (!userLoaded) return <div />;
 
   return (
     <>
@@ -70,13 +80,9 @@ export default function Home() {
           <SignedOut>
             <SignInButton />
           </SignedOut>
-
-          <div>
-            {data.map((fullListing) => (
-              <BusinessView key={fullListing.business.id} {...fullListing} />
-            ))}
-          </div>
         </section>
+
+        <Listing />
       </main>
     </>
   );

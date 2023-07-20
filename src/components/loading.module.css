@@ -1,0 +1,28 @@
+.loadingSpinner {
+  animation: spin 1s linear infinite;
+  color: var(--surface-secondary);
+  display: inline;
+  fill: var(--pallet-primary);
+}
+
+.sr-only {
+  border: 0;
+  clip-path: inset(50%);
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

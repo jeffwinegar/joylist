@@ -7,7 +7,7 @@
   --color-gray-60: hsl(215deg, 22%, 34%);
   --color-gray-80: hsl(240deg, 6%, 3%);
 
-  --pallet-primary: var(var(--color-blue));
+  --pallet-primary: var(--color-blue);
 
   --surface-primary: var(--color-white);
   --surface-secondary: var(--color-gray-20);
