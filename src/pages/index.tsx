@@ -9,6 +9,12 @@ import { LoadingSpinner } from '~/components/loading';
 
 const AddBusinessWizard = () => {
   const { user } = useUser();
+  const ctx = api.useContext();
+  const { mutate } = api.businesses.create.useMutation({
+    onSuccess: () => {
+      ctx.businesses.getAll.invalidate();
+    },
+  });
 
   if (!user) return null;
 
