@@ -24,7 +24,7 @@ const AddBusinessForm = () => {
   const ctx = api.useContext();
   const { mutate } = api.businesses.create.useMutation({
     onSuccess: () => {
-      void ctx.businesses.getAll.invalidate();
+      ctx.businesses.getAll.invalidate();
     },
   });
   const {
