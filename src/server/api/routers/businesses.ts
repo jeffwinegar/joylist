@@ -1,7 +1,7 @@
 import { clerkClient } from '@clerk/nextjs';
 import type { User } from '@clerk/nextjs/dist/types/server';
 import { TRPCError } from '@trpc/server';
-import { z } from 'zod';
+import { validationSchema } from '~/pages/index';
 import {
   createTRPCRouter,
   privateProcedure,
@@ -10,7 +10,6 @@ import {
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 
-const phoneRegex = new RegExp(/^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/);
 const filterUserForClient = (user: User) => {
   return {
     id: user.id,
@@ -58,13 +57,7 @@ export const businessesRouter = createTRPCRouter({
   }),
 
   create: privateProcedure
-    .input(
-      z.object({
-        name: z.string(),
-        url: z.string().url(),
-        phone: z.string().regex(phoneRegex, 'Invalid Phone Number'),
-      })
-    )
+    .input(validationSchema)
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.userId;
       const { name, url, phone } = input;

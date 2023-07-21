@@ -1,13 +1,25 @@
 import { SignInButton, SignedIn, SignedOut, useUser } from '@clerk/nextjs';
 // import styles from './index.module.css';
 import Head from 'next/head';
-// import Link from 'next/link';
 import { api } from '~/utils/api';
 import type { RouterOutputs } from '~/utils/api';
 import Image from 'next/image';
 import { LoadingSpinner } from '~/components/loading';
+import { type SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
-const AddBusinessWizard = () => {
+const phoneRegex = new RegExp(/^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/);
+
+export const validationSchema = z.object({
+  name: z.string().min(2).max(280),
+  url: z.string().url(),
+  phone: z.string().regex(phoneRegex, 'Invalid Phone Number'),
+});
+
+type Schema = z.infer<typeof validationSchema>;
+
+const AddBusinessForm = () => {
   const { user } = useUser();
   const ctx = api.useContext();
   const { mutate } = api.businesses.create.useMutation({
@@ -15,18 +27,45 @@ const AddBusinessWizard = () => {
       ctx.businesses.getAll.invalidate();
     },
   });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<Schema>({
+    resolver: zodResolver(validationSchema),
+  });
+  const onSubmit: SubmitHandler<Schema> = (data) => {
+    mutate(data);
+    reset();
+  };
 
-  if (!user) return null;
+  if (!user || !user.firstName) return null;
 
   return (
-    <div>
-      <Image
-        src={user.imageUrl}
-        alt={`${user.firstName}'s profile image`}
-        height={64}
-        width={64}
-      />
-    </div>
+    <>
+      <div>
+        <Image
+          src={user.imageUrl}
+          alt={`${user.firstName}'s profile image`}
+          height={64}
+          width={64}
+        />
+      </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <label>Business Name</label>
+        <input {...register('name')} />
+        {errors.name?.message && <p>{errors.name.message}</p>}
+        <label>Website</label>
+        <input {...register('url')} />
+        {errors.url?.message && <p>{errors.url.message}</p>}
+        <label>Phone</label>
+        <input {...register('phone')} />
+        {errors.phone?.message && <p>{errors.phone.message}</p>}
+
+        <button type="submit">Add business</button>
+      </form>
+    </>
   );
 };
 
@@ -81,7 +120,7 @@ export default function Home() {
       <main>
         <section>
           <SignedIn>
-            <AddBusinessWizard />
+            <AddBusinessForm />
           </SignedIn>
           <SignedOut>
             <SignInButton />
