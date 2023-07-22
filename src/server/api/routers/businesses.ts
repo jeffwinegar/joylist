@@ -1,23 +1,48 @@
 import { clerkClient } from '@clerk/nextjs';
-import type { User } from '@clerk/nextjs/dist/types/server';
+import type { Business } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
+import { z } from 'zod';
 import { validationSchema } from '~/pages/index';
 import {
   createTRPCRouter,
   privateProcedure,
   publicProcedure,
 } from '~/server/api/trpc';
-import { Ratelimit } from '@upstash/ratelimit';
-import { Redis } from '@upstash/redis';
+import { filterUserForClient } from '~/server/helpers/filterUserForClient';
 
-const filterUserForClient = (user: User) => {
-  return {
-    id: user.id,
-    username: user.username,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    imageUrl: user.imageUrl,
-  };
+const addUserDataToBusinesses = async (businesses: Business[]) => {
+  const users = (
+    await clerkClient.users.getUserList({
+      userId: businesses.map((business) => business.userId),
+    })
+  ).map(filterUserForClient);
+
+  return businesses.map((business) => {
+    const user = users.find((user) => user.id === business.userId);
+
+    if (!user) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'User for listing not found',
+      });
+    }
+    if (!user.username) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'User has no account',
+      });
+    }
+
+    return {
+      business,
+      user: {
+        ...user,
+        username: user.username ?? '(username not found)',
+      },
+    };
+  });
 };
 
 // Create a new ratelimiter, that allows 3 requests per 1 minute
@@ -31,30 +56,18 @@ export const businessesRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
     const businesses = await ctx.prisma.business.findMany();
 
-    const users = (
-      await clerkClient.users.getUserList({
-        userId: businesses.map((business) => business.userId),
-      })
-    ).map(filterUserForClient);
-
-    return businesses.map((business) => {
-      const user = users.find((user) => user.id === business.userId);
-
-      if (!user || !user.username)
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'User for listing not found',
-        });
-
-      return {
-        business,
-        user: {
-          ...user,
-          username: user.username,
-        },
-      };
-    });
+    return addUserDataToBusinesses(businesses);
   }),
+
+  getBusinessesByUserId: publicProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const businesses = await ctx.prisma.business.findMany({
+        where: { userId: input.userId },
+      });
+
+      return addUserDataToBusinesses(businesses);
+    }),
 
   create: privateProcedure
     .input(validationSchema)
