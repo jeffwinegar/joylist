@@ -45,7 +45,7 @@ export default function ProfilePage({ username }: { username: string }) {
           <div className={styles['user-banner']}></div>
           <div className={styles['user-info']}>
             <Image
-              alt={`${data.firstName ?? 'User'}'s profile image`}
+              alt={`${data.firstName}'s profile image`}
               className={styles['user-image']}
               height={86}
               src={data.imageUrl}

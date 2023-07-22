@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
-import { api, type RouterOutputs } from '~/utils/api';
+import { api } from '~/utils/api';
 import { LoadingSpinner } from '~/components/loading';
 import { BusinessView } from '~/components/businessView';
 
