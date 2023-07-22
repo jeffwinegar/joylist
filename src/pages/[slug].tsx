@@ -35,25 +35,29 @@ export default function ProfilePage({ username }: { username: string }) {
 
   if (!data) return <div>404</div>;
 
+  // required in Clerk so these should never be empty
+  const firstName = data.firstName ?? '';
+  const lastName = data.lastName ?? '';
+
   return (
     <>
       <Head>
-        <title>{`${data.firstName}'s JoyList`}</title>
+        <title>{`${firstName}'s JoyList`}</title>
       </Head>
       <main>
         <section>
           <div className={styles['user-banner']}></div>
           <div className={styles['user-info']}>
             <Image
-              alt={`${data.firstName}'s profile image`}
+              alt={`${firstName}'s profile image`}
               className={styles['user-image']}
               height={86}
               src={data.imageUrl}
               width={86}
             />
-            <h1 className={styles.username}>{data.username}</h1>
+            <h1 className={styles.username}>{data.username ?? ''}</h1>
             <div className={styles.fullname}>
-              <span>{data.firstName}</span> <span>{data.lastName}</span>
+              <span>{firstName}</span> <span>{lastName}</span>
             </div>
           </div>
         </section>
