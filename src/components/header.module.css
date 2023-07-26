@@ -1,0 +1,53 @@
+.content {
+  align-items: center;
+  backdrop-filter: blur(5px);
+  color: var(--surface-primary);
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  min-height: calc(32px + (0.5rem * 2));
+  padding-block: 0.5rem;
+  padding-inline: 1rem;
+  position: sticky;
+  inset: 0;
+}
+
+.logo-mark {
+  font-size: 1.125rem;
+  font-weight: 500;
+  letter-spacing: 0.125ex;
+}
+
+.primary-button,
+.secondary-button {
+  background-color: transparent;
+  border-radius: 2rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  line-height: 26px;
+  transition: background-color 0.25s ease;
+}
+
+.primary-button {
+  border: solid 2px var(--surface-secondary);
+  color: var(--surface-primary);
+  padding-inline: 1rem;
+}
+.primary-button:where(:hover, :active) {
+  background-color: var(--surface-secondary-action);
+}
+
+.secondary-button {
+  border: none;
+  color: var(--surface-secondary);
+  padding-inline: 0.625rem;
+}
+.secondary-button:where(:hover, :active) {
+  background-color: var(--surface-secondary-action);
+  color: var(--surface-primary);
+}
+
+.user-controls {
+  display: flex;
+  gap: 0.5rem;
+}
