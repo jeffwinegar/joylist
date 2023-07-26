@@ -1,16 +1,58 @@
 .user-banner {
   background-color: var(--pallet-primary);
-  height: 150px;
+  background-image: linear-gradient(
+    to bottom right,
+    var(--pallet-primary) 0%,
+    var(--pallet-secondary) 100%
+  );
+  height: calc(150px + (32px + 1rem));
+  margin-top: calc(-32px - 1rem);
   width: 100%;
 }
 
 .user-info {
-  padding-inline: 1rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr auto;
+  padding: 0.5rem 1rem 1rem;
 }
+
+.profile-editor {
+  display: grid;
+}
+.profile-editor summary {
+  background-color: var(--surface-secondary);
+  border-radius: 2em;
+  cursor: pointer;
+  line-height: 32px;
+  padding-inline: 1.25em;
+  width: fit-content;
+}
+.profile-editor > summary:first-of-type {
+  list-style: none;
+}
+.profile-editor > summary::-webkit-details-marker {
+  display: none;
+}
+
 .user-image {
+  align-items: center;
+  aspect-ratio: 1;
+  background-color: var(--surface-primary);
   border-radius: 50%;
   border: solid 3px var(--surface-primary);
-  margin-block-start: -40px;
+  display: block;
+  justify-content: center;
+  margin-block-start: calc((-6.625rem / 2) - 0.5rem);
+  overflow: hidden;
+  width: 6.625rem;
+}
+.user-image img {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  height: auto;
+  object-fit: cover;
+  width: 100%;
 }
 
 .username {
@@ -18,6 +60,6 @@
   margin-block: 0;
 }
 
-.fullname {
+.full-name {
   color: var(--text-secondary);
 }

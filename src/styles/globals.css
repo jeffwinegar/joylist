@@ -3,17 +3,21 @@
 
   --color-white: hsl(0deg, 0%, 100%);
   --color-gray-20: hsl(209deg, 38%, 89%);
+  --color-gray-20-transparent: hsl(209deg, 38%, 89%, 25%);
   --color-gray-40: hsl(214deg, 14%, 45%);
   --color-gray-60: hsl(215deg, 22%, 34%);
   --color-gray-80: hsl(240deg, 6%, 3%);
 
   --pallet-primary: var(--color-blue);
+  --pallet-secondary: hotpink;
 
   --surface-primary: var(--color-white);
   --surface-secondary: var(--color-gray-20);
+  --surface-secondary-action: var(--color-gray-20-transparent);
 
   --text-primary: var(--color-gray-80);
   --text-secondary: var(--color-gray-60);
+  --text-tertiary: var(--color-gray-40);
   --text-link: var(--color-blue);
 }
 
