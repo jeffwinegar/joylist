@@ -7,15 +7,15 @@ import Image from 'next/image';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import superjson from 'superjson';
 import { z } from 'zod';
-import { BusinessView } from '~/components/businessView';
 import { LoadingSpinner } from '~/components/loading';
 import { appRouter } from '~/server/api/root';
 import { prisma } from '~/server/db';
-import { api } from '~/utils/api';
+import { api, type RouterOutputs } from '~/utils/api';
 import { businessValidationSchema } from '~/utils/businessValidator';
 import styles from './profile.module.css';
 
 type FormSchema = z.infer<typeof businessValidationSchema>;
+type BusinessWithUser = RouterOutputs['businesses']['getAll'][number];
 
 const AddBusinessForm = () => {
   const ctx = api.useContext();
@@ -51,6 +51,22 @@ const AddBusinessForm = () => {
 
       <button type="submit">Add Business</button>
     </form>
+  );
+};
+
+const BusinessView = (props: BusinessWithUser) => {
+  const { business } = props;
+
+  return (
+    <li key={business.id}>
+      {business.name}
+      {' • '}
+      <a href={business.url} target="_blank" rel="noopener noreferrer">
+        Website
+      </a>
+      {' • '}
+      <a href={`tel:+${business.phone}`}>{business.phone}</a>
+    </li>
   );
 };
 
