@@ -5,10 +5,7 @@ import { authMiddleware } from '@clerk/nextjs';
 // See https://clerk.com/docs/nextjs/middleware for more information about configuring your middleware
 
 // Set the paths that don't require the user to be signed in
-const publicRoutes = [
-  '/',
-  '/api(.*)',
-];
+const publicRoutes = ['/(.*)', '/api(.*)'];
 
 export default authMiddleware({ publicRoutes });
 

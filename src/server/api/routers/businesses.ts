@@ -4,7 +4,7 @@ import { TRPCError } from '@trpc/server';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 import { z } from 'zod';
-import { validationSchema } from '~/pages/index';
+import { businessValidationSchema } from '~/utils/businessValidator';
 import {
   createTRPCRouter,
   privateProcedure,
@@ -70,7 +70,7 @@ export const businessesRouter = createTRPCRouter({
     }),
 
   create: privateProcedure
-    .input(validationSchema)
+    .input(businessValidationSchema)
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.userId;
       const { name, url, phone } = input;
