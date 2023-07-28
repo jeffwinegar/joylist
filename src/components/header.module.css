@@ -34,7 +34,7 @@
   padding-inline: 1rem;
 }
 .primary-button:where(:hover, :active) {
-  background-color: var(--surface-secondary-action);
+  background-color: var(--surface-secondary-soft);
 }
 
 .secondary-button {
@@ -43,7 +43,7 @@
   padding-inline: 0.625rem;
 }
 .secondary-button:where(:hover, :active) {
-  background-color: var(--surface-secondary-action);
+  background-color: var(--surface-secondary-soft);
   color: var(--surface-primary);
 }
 

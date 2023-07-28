@@ -4,6 +4,8 @@ import { createServerSideHelpers } from '@trpc/react-query/server';
 import type { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import React from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import superjson from 'superjson';
 import { z } from 'zod';
@@ -16,6 +18,42 @@ import styles from './profile.module.css';
 
 type FormSchema = z.infer<typeof businessValidationSchema>;
 type BusinessWithUser = RouterOutputs['businesses']['getAll'][number];
+
+const CopyURLToClipboardButton = () => {
+  const baseUrl =
+    typeof window !== 'undefined' && window.location.origin
+      ? window.location.origin
+      : '';
+  const router = useRouter();
+  const [copied, setCopied] = React.useState(false);
+
+  const copy = async () => {
+    await navigator.clipboard.writeText(`${baseUrl}${router.asPath}`);
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 1000);
+  };
+
+  return (
+    <button
+      aria-label="Copy URL"
+      className={styles['share-button']}
+      onClick={copy}
+    >
+      {copied ? (
+        <svg height={20} width={20}>
+          <use href="/icons.svg#check" />
+        </svg>
+      ) : (
+        <svg height={20} width={20}>
+          <use href="/icons.svg#link" />
+        </svg>
+      )}
+    </button>
+  );
+};
 
 const AddBusinessForm = () => {
   const ctx = api.useContext();
@@ -39,17 +77,29 @@ const AddBusinessForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <label>Business Name</label>
-      <input {...register('name')} />
-      {errors.name?.message && <p>{errors.name.message}</p>}
-      <label>Website</label>
-      <input placeholder="https://www.joylist.guide" {...register('url')} />
-      {errors.url?.message && <p>{errors.url.message}</p>}
-      <label>Phone</label>
-      <input placeholder="(555) 555-1234" {...register('phone')} />
-      {errors.phone?.message && <p>{errors.phone.message}</p>}
+      <div className={styles['form-item']}>
+        <label>Business Name</label>
+        <input {...register('name')} />
+        {errors.name?.message && <p>{errors.name.message}</p>}
+      </div>
+
+      <div className={styles['form-item']}>
+        <label>Website</label>
+        <input
+          placeholder="e.g. https://www.joylist.guide"
+          {...register('url')}
+        />
+        {errors.url?.message && <p>{errors.url.message}</p>}
+      </div>
+
+      <div className={styles['form-item']}>
+        <label>Phone</label>
+        <input placeholder="e.g. (555) 555-1234" {...register('phone')} />
+        {errors.phone?.message && <p>{errors.phone.message}</p>}
+      </div>
 
       <button type="submit">Add Business</button>
+      <button type="reset">Cancel</button>
     </form>
   );
 };
@@ -59,28 +109,36 @@ const BusinessView = (props: BusinessWithUser) => {
 
   return (
     <li key={business.id}>
-      {business.name}
-      {' • '}
+      <span>{business.name}</span>
+      {' ⸱ '}
       <a href={business.url} target="_blank" rel="noopener noreferrer">
         Website
       </a>
-      {' • '}
+      {' ⸱ '}
       <a href={`tel:+${business.phone}`}>{business.phone}</a>
     </li>
   );
 };
 
-const ProfileListing = (props: { userId: string }) => {
+const ProfileList = (props: { userId: string }) => {
   const { data, isLoading } = api.businesses.getBusinessesByUserId.useQuery({
     userId: props.userId,
   });
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return <LoadingSpinner size={28} />;
 
-  if (!data || data.length === 0) return <div>No items yet!</div>;
+  if (!data || data.length === 0)
+    return (
+      <div className={styles['empty-list']}>
+        <svg height={68} width={68}>
+          <use href="/icons.svg#gift" />
+        </svg>{' '}
+        No items yet!
+      </div>
+    );
 
   return (
-    <ul role="list">
+    <ul className={styles.list} role="list">
       {data.map((fullListing) => (
         <BusinessView key={fullListing.business.id} {...fullListing} />
       ))}
@@ -106,6 +164,7 @@ export default function ProfilePage({ username }: { username: string }) {
     <>
       <Head>
         <title>{`${firstName}'s JoyList`}</title>
+        <link rel="preload" as="image/svg+xml" href="icons.svg" />
       </Head>
       <main>
         <section>
@@ -116,6 +175,7 @@ export default function ProfilePage({ username }: { username: string }) {
                 <Image
                   alt={`${firstName}'s profile image`}
                   height={100}
+                  priority={true}
                   src={data.imageUrl}
                   width={100}
                 />
@@ -126,21 +186,19 @@ export default function ProfilePage({ username }: { username: string }) {
               </div>
             </div>
             <div>
-              <button>Share</button>
+              <CopyURLToClipboardButton />
             </div>
           </div>
         </section>
-        <section>
-          <h2>My JoyList</h2>
+        <section className={styles['list-content']}>
+          <h2 className={styles['list-heading']}>My JoyList</h2>
           {isSignedIn && isLoggedInUserProfile ? (
-            <details className={styles['profile-editor']}>
+            <details className={styles['list-editor']}>
               <summary>Add to your list</summary>
-              <div>
-                <AddBusinessForm />
-              </div>
+              <AddBusinessForm />
             </details>
           ) : null}
-          <ProfileListing userId={data.id} />
+          <ProfileList userId={data.id} />
         </section>
       </main>
     </>
