@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 import superjson from 'superjson';
 import { z } from 'zod';
 import { LoadingSpinner } from '~/components/loading';
@@ -30,6 +31,9 @@ const CopyURLToClipboardButton = () => {
   const copy = async () => {
     await navigator.clipboard.writeText(`${baseUrl}${router.asPath}`);
     setCopied(true);
+    toast.success('Copied to clipboard!', {
+      id: 'clipboard',
+    });
 
     setTimeout(() => {
       setCopied(false);
