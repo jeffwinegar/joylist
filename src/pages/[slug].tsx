@@ -26,18 +26,13 @@ const CopyURLToClipboardButton = () => {
       ? window.location.origin
       : '';
   const router = useRouter();
-  const [copied, setCopied] = React.useState(false);
 
   const copy = async () => {
     await navigator.clipboard.writeText(`${baseUrl}${router.asPath}`);
-    setCopied(true);
+
     toast.success('Copied to clipboard!', {
       id: 'clipboard',
     });
-
-    setTimeout(() => {
-      setCopied(false);
-    }, 1000);
   };
 
   return (
@@ -46,15 +41,9 @@ const CopyURLToClipboardButton = () => {
       className={styles['share-button']}
       onClick={copy}
     >
-      {copied ? (
-        <svg height={20} width={20}>
-          <use href="/icons.svg#check" />
-        </svg>
-      ) : (
-        <svg height={20} width={20}>
-          <use href="/icons.svg#link" />
-        </svg>
-      )}
+      <svg height={20} width={20}>
+        <use href="/icons.svg#link" />
+      </svg>
     </button>
   );
 };
@@ -82,28 +71,44 @@ const AddBusinessForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className={styles['form-item']}>
-        <label>Business Name</label>
-        <input {...register('name')} />
-        {errors.name?.message && <p>{errors.name.message}</p>}
+        <label htmlFor="businessName">Business Name</label>
+        <input
+          aria-invalid={errors.name ? 'true' : 'false'}
+          id="businessName"
+          type="text"
+          {...register('name')}
+        />
+        {!!errors.name && <p role="alert">{errors.name.message}</p>}
       </div>
 
       <div className={styles['form-item']}>
-        <label>Website</label>
+        <label htmlFor="businessWebsite">Website</label>
         <input
+          aria-invalid={errors.url ? 'true' : 'false'}
+          id="businessWebsite"
           placeholder="e.g. https://www.joylist.guide"
+          type="text"
           {...register('url')}
         />
-        {errors.url?.message && <p>{errors.url.message}</p>}
+        {!!errors.url && <p role="alert">{errors.url.message}</p>}
       </div>
 
       <div className={styles['form-item']}>
-        <label>Phone</label>
-        <input placeholder="e.g. (555) 555-1234" {...register('phone')} />
-        {errors.phone?.message && <p>{errors.phone.message}</p>}
+        <label htmlFor="businessPhone">Phone</label>
+        <input
+          aria-invalid={errors.phone ? 'true' : 'false'}
+          id="businessPhone"
+          placeholder="e.g. (555) 555-1234"
+          type="text"
+          {...register('phone')}
+        />
+        {!!errors.phone && <p role="alert">{errors.phone.message}</p>}
       </div>
 
       <button type="submit">Add Business</button>
-      <button type="reset">Cancel</button>
+      <button type="reset" onClick={() => reset()}>
+        Cancel
+      </button>
     </form>
   );
 };
@@ -168,7 +173,6 @@ export default function ProfilePage({ username }: { username: string }) {
     <>
       <Head>
         <title>{`${firstName}'s JoyList`}</title>
-        <link rel="preload" as="image/svg+xml" href="icons.svg" />
       </Head>
       <main>
         <section>
@@ -185,9 +189,9 @@ export default function ProfilePage({ username }: { username: string }) {
                 />
               </span>
               <h1 className={styles.username}>{data.username ?? ''}</h1>
-              <div className={styles['full-name']}>
-                <span>{firstName}</span> <span>{lastName}</span>
-              </div>
+              <p
+                className={styles['full-name']}
+              >{`${firstName} ${lastName}`}</p>
             </div>
             <div>
               <CopyURLToClipboardButton />

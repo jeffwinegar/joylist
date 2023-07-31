@@ -1,19 +1,19 @@
 .content {
   align-items: center;
-  backdrop-filter: blur(5px);
   color: var(--surface-primary);
   display: flex;
   gap: 1rem;
+  inline-size: 100%;
   justify-content: space-between;
-  min-height: calc(32px + (0.5rem * 2));
-  padding-block: 0.5rem;
+  min-block-size: calc(32px + (0.75rem * 2));
+  padding-block: 0.75rem;
   padding-inline: 1rem;
-  position: sticky;
-  inset: 0;
+  position: absolute;
+  top: 0;
 }
 
 .logo-mark {
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   font-weight: 500;
   letter-spacing: 0.125ex;
 }

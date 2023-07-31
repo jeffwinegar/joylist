@@ -15,6 +15,7 @@
 
   --pallet-primary: var(--color-blue);
   --pallet-secondary: hotpink;
+  --pallet-error: hsl(4deg, 85%, 46%);
 
   --surface-primary: var(--color-white);
   --surface-secondary: var(--color-gray-20);
@@ -58,12 +59,9 @@ html:focus-within {
 body {
   background-color: var(--surface-primary);
   color: var(--text-primary);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Fira Sans', 'Droid Sans',
-    'Helvetica Neue', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol';
+  font-family: var(--font-playfairDisplay);
   line-height: calc(1ex / 0.32);
-  min-height: 100vh;
+  min-block-size: 100vh;
   text-rendering: optimizeSpeed;
   -webkit-font-smoothing: antialiased;
 }
@@ -72,7 +70,7 @@ img,
 picture,
 svg {
   display: block;
-  max-width: 100%;
+  max-inline-size: 100%;
 }
 
 button,
@@ -133,4 +131,8 @@ h4 {
 
 p {
   margin-block: calc(1ex / 0.32);
+}
+
+#__next {
+  font-size: 1.125rem;
 }

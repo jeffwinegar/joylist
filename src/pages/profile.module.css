@@ -1,7 +1,7 @@
 .user-info,
 .list-content {
   margin-inline: auto;
-  max-width: var(--container-max-width);
+  max-inline-size: var(--container-max-width);
   padding: 0.5rem 1rem 1rem;
 }
 
@@ -12,9 +12,8 @@
     var(--pallet-primary) 0%,
     var(--pallet-secondary) 100%
   );
-  height: calc(150px + (32px + 1rem));
-  margin-top: calc(-32px - 1rem);
-  width: 100%;
+  block-size: calc(150px + (32px + (0.75rem * 2)));
+  inline-size: 100%;
 }
 
 .user-info {
@@ -43,8 +42,8 @@
 }
 
 .list-editor > summary {
+  inline-size: fit-content;
   padding-inline: 1.25em;
-  width: fit-content;
 }
 .list-editor > summary:first-of-type {
   list-style: none;
@@ -76,10 +75,15 @@
 .list-editor input::placeholder {
   color: var(--text-tertiary-subtle);
 }
+.list-editor input[aria-invalid='true'] {
+  border-color: var(--pallet-error);
+}
 
 .form-item p {
+  color: var(--pallet-error);
   font-size: 0.875rem;
   margin-block: 0;
+  margin-inline-start: 6px;
 }
 
 .user-image {
@@ -89,17 +93,17 @@
   border-radius: 50%;
   border: solid 3px var(--surface-primary);
   display: block;
+  inline-size: 6.625rem;
   justify-content: center;
   margin-block-start: calc((-6.625rem / 2) - 0.5rem);
   overflow: hidden;
-  width: 6.625rem;
 }
 .user-image img {
   aspect-ratio: 1;
+  block-size: auto;
   border-radius: 50%;
-  height: auto;
+  inline-size: 100%;
   object-fit: cover;
-  width: 100%;
 }
 
 .username {
@@ -109,10 +113,11 @@
 
 .full-name {
   color: var(--text-secondary);
+  margin-block: 0;
 }
 
 .list-heading {
-  font-size: 1rem;
+  font-size: 1.125rem;
   font-weight: 600;
   margin-block: 0 1rem;
 }
@@ -127,6 +132,7 @@
   display: flex;
   flex-direction: column;
   font-size: 1.125rem;
+  font-weight: 500;
   gap: 0.5rem;
   padding: 2rem;
 }
