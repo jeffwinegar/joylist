@@ -1,11 +1,11 @@
 .content {
   align-items: center;
-  color: var(--surface-primary);
+  color: var(--text-reverse);
   display: flex;
   gap: 1rem;
   inline-size: 100%;
   justify-content: space-between;
-  min-block-size: calc(32px + (0.75rem * 2));
+  min-block-size: calc(2rem + (0.75rem * 2));
   padding-block: 0.75rem;
   padding-inline: 1rem;
   position: absolute;
@@ -22,29 +22,27 @@
 .secondary-button {
   background-color: transparent;
   border-radius: 2rem;
+  color: var(--text-reverse);
   cursor: pointer;
-  font-size: 0.875rem;
-  line-height: 26px;
+  font-size: 0.9375rem;
+  letter-spacing: 0.05ex;
+  line-height: 1.625rem;
+  padding-inline: 1rem;
   transition: background-color 0.25s ease;
 }
 
 .primary-button {
-  border: solid 2px var(--surface-secondary);
-  color: var(--surface-primary);
-  padding-inline: 1rem;
+  border: solid 2px var(--surface-secondary-subtle);
 }
 .primary-button:where(:hover, :active) {
-  background-color: var(--surface-secondary-soft);
+  background-color: var(--surface-secondary-shy);
 }
 
 .secondary-button {
   border: none;
-  color: var(--surface-secondary);
-  padding-inline: 0.625rem;
 }
 .secondary-button:where(:hover, :active) {
-  background-color: var(--surface-secondary-soft);
-  color: var(--surface-primary);
+  background-color: var(--surface-secondary-shy);
 }
 
 .user-controls {

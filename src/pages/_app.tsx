@@ -7,21 +7,22 @@ import { Header } from '~/components/header';
 import '~/styles/globals.css';
 import { api } from '~/utils/api';
 
-const playfairDisplay = Playfair_Display({ subsets: ['latin'] });
+const playfair_display = Playfair_Display({ subsets: ['latin'] });
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <ClerkProvider {...pageProps}>
-      <style jsx global>{`
-        :root {
-          --font-playfairDisplay: ${playfairDisplay.style.fontFamily};
-        }
-      `}</style>
       <Head>
         <title>JoyList</title>
         <meta name="description" content="Give the right gift." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <style jsx global>{`
+        :root {
+          --font-playfair-display: ${playfair_display.style.fontFamily};
+        }
+      `}</style>
+
       <Toaster position="bottom-left" />
       <Header />
       <Component {...pageProps} />

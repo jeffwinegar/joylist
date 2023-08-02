@@ -29,6 +29,7 @@
   --text-tertiary-soft: var(--color-gray-40-o50);
   --text-tertiary-subtle: var(--color-gray-40-o75);
   --text-link: var(--color-blue);
+  --text-reverse: var(--color-white);
 
   --container-max-width: 80ch;
 }
@@ -59,7 +60,7 @@ html:focus-within {
 body {
   background-color: var(--surface-primary);
   color: var(--text-primary);
-  font-family: var(--font-playfairDisplay);
+  font-family: var(--font-playfair-display);
   line-height: calc(1ex / 0.32);
   min-block-size: 100vh;
   text-rendering: optimizeSpeed;
@@ -135,4 +136,5 @@ p {
 
 #__next {
   font-size: 1.125rem;
+  isolation: isolate;
 }

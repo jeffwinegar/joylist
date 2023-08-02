@@ -1,0 +1,25 @@
+.container {
+  margin-inline: auto;
+  max-inline-size: var(--container-max-width);
+  padding-inline: 1rem;
+  text-shadow: 0 0 10px var(--text-tertiary-subtle);
+}
+
+.hero-section {
+  background-color: var(--pallet-primary);
+  background-image: linear-gradient(
+    to bottom right,
+    var(--pallet-primary) 0%,
+    var(--pallet-secondary) 100%
+  );
+  color: var(--text-reverse);
+  padding-block: 3.5rem;
+}
+
+.hero-content {
+  max-inline-size: 45ch;
+}
+.hero-content p {
+  font-size: 1.25rem;
+  letter-spacing: 0.05ex;
+}
