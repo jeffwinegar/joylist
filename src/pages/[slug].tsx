@@ -144,11 +144,11 @@ const BusinessView = (props: BusinessWithUser) => {
       >
         <Image
           alt="business favicon"
-          height={24}
+          height={32}
           onError={() => setError(true)}
           priority={true}
           src={error ? '/fallbackHeart.svg' : iconSrc}
-          width={24}
+          width={32}
         />
         <p>
           <span className={styles['business-name']}>{business.name}</span>

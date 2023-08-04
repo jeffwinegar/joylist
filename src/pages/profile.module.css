@@ -165,7 +165,7 @@
   color: inherit;
   display: flex;
   gap: 1ch;
-  padding: 1.25ch 1.75ch;
+  padding: 1.25ch 1.5ch;
   text-decoration: none;
   transition: transform 0.25s ease;
 }
@@ -187,10 +187,13 @@
 }
 
 .list-icon {
-  block-size: 2ch;
+  align-items: center;
+  block-size: 2rem;
   color: var(--pallet-primary);
+  display: flex;
   flex-shrink: 0;
-  inline-size: 2ch;
+  inline-size: 2rem;
+  justify-content: center;
 }
 
 .business-name {
