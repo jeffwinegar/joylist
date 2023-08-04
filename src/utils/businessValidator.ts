@@ -2,8 +2,6 @@ import { z } from 'zod';
 import isMobilePhone from 'validator/lib/isMobilePhone';
 import isURL from 'validator/lib/isURL';
 
-const phoneRegex = new RegExp(/^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/);
-
 export const businessValidationSchema = z.object({
   name: z
     .string()

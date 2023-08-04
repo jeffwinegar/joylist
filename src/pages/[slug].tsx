@@ -9,7 +9,7 @@ import React from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import superjson from 'superjson';
-import { z } from 'zod';
+import type { z } from 'zod';
 import { LoadingSpinner } from '~/components/loading';
 import { appRouter } from '~/server/api/root';
 import { prisma } from '~/server/db';
