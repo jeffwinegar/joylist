@@ -12,7 +12,7 @@
     var(--pallet-primary) 0%,
     var(--pallet-secondary) 100%
   );
-  block-size: calc(150px + (32px + (0.75rem * 2)));
+  block-size: calc(150px + (2rem + (0.75rem * 2)));
   inline-size: 100%;
 }
 
@@ -28,7 +28,7 @@
   border-radius: 4em;
   color: var(--text-primary);
   cursor: pointer;
-  line-height: 32px;
+  line-height: 2rem;
   transition: background-color 0.25s ease;
 }
 .share-button:where(:hover, :active),
@@ -42,6 +42,7 @@
 }
 
 .list-editor > summary {
+  font-size: 1rem;
   inline-size: fit-content;
   padding-inline: 1.25em;
 }
@@ -62,9 +63,34 @@
   margin-block-start: 1rem;
 }
 
-.form-item label {
+.list-editor button {
+  border-radius: 2rem;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
   font-weight: 600;
+  line-height: 2.25rem;
+  padding-inline: 1rem;
+  transition: background-color 0.25s ease;
+}
+.list-editor [type='submit'] {
+  background-color: var(--pallet-primary);
+  color: var(--surface-primary);
+  margin-block-start: 0.5rem;
+}
+.list-editor [type='reset'] {
+  background-color: transparent;
+}
+
+.form-item label {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.05ex;
   padding-inline: 6px;
+}
+.form-item label > span {
+  color: var(--text-tertiary);
+  font-size: 0.875em;
 }
 
 .list-editor input {
@@ -113,6 +139,7 @@
 
 .full-name {
   color: var(--text-secondary);
+  letter-spacing: 0.05ex;
   margin-block: 0;
 }
 
@@ -123,7 +150,52 @@
 }
 
 .list {
+  align-items: flex-start;
+  display: grid;
+  gap: 1ch;
+  grid-template-columns: repeat(auto-fit, minmax(min(30ch, 100%), 1fr));
+  justify-items: flex-start;
   padding-inline-start: 0;
+}
+
+.list-item {
+  align-items: center;
+  background-color: var(--surface-secondary-shy);
+  border-radius: 100ch;
+  color: inherit;
+  display: flex;
+  gap: 1ch;
+  padding: 1.25ch 1.75ch;
+  text-decoration: none;
+  transition: transform 0.25s ease;
+}
+.list-item:is(:focus, :hover) {
+  transform: scale(1.02);
+}
+
+.list p {
+  align-items: baseline;
+  display: flex;
+  flex-flow: row wrap;
+  font-size: 1rem;
+  gap: 0 0.5ch;
+  line-height: 1.2;
+  margin: 0;
+}
+.list p > span {
+  display: inline-block;
+}
+
+.list-icon {
+  block-size: 2ch;
+  color: var(--pallet-primary);
+  flex-shrink: 0;
+  inline-size: 2ch;
+}
+
+.business-name {
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 .empty-list {

@@ -14,7 +14,7 @@
   --color-gray-80: hsl(240deg, 6%, 3%);
 
   --pallet-primary: var(--color-blue);
-  --pallet-secondary: hotpink;
+  --pallet-secondary: hsl(330deg, 100%, 71%);
   --pallet-error: hsl(4deg, 85%, 46%);
 
   --surface-primary: var(--color-white);

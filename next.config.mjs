@@ -13,6 +13,10 @@ const config = {
         protocol: 'https',
         hostname: 'img.clerk.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'icons.duckduckgo.com',
+      },
     ],
   },
 

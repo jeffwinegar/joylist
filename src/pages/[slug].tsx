@@ -82,6 +82,19 @@ const AddBusinessForm = () => {
       </div>
 
       <div className={styles['form-item']}>
+        <label htmlFor="businessType">
+          Business Type <span>(Optional)</span>
+        </label>
+        <input
+          aria-invalid={errors.type ? 'true' : 'false'}
+          id="businessType"
+          type="text"
+          {...register('type')}
+        />
+        {!!errors.type && <p role="alert">{errors.type.message}</p>}
+      </div>
+
+      <div className={styles['form-item']}>
         <label htmlFor="businessWebsite">Website</label>
         <input
           aria-invalid={errors.url ? 'true' : 'false'}
@@ -94,7 +107,9 @@ const AddBusinessForm = () => {
       </div>
 
       <div className={styles['form-item']}>
-        <label htmlFor="businessPhone">Phone</label>
+        <label htmlFor="businessPhone">
+          Phone <span>(Optional)</span>
+        </label>
         <input
           aria-invalid={errors.phone ? 'true' : 'false'}
           id="businessPhone"
@@ -115,16 +130,38 @@ const AddBusinessForm = () => {
 
 const BusinessView = (props: BusinessWithUser) => {
   const { business } = props;
+  const iconSrc = `https://icons.duckduckgo.com/ip3/${
+    new URL(business.url).hostname
+  }.ico`;
+  const [error, setError] = React.useState(false);
 
   return (
     <li key={business.id}>
-      <span>{business.name}</span>
-      {' ⸱ '}
-      <a href={business.url} target="_blank" rel="noopener noreferrer">
-        Website
+      <a
+        className={styles['list-item']}
+        href={business.url}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <Image
+          alt="business favicon"
+          height={24}
+          onError={() => setError(true)}
+          priority={true}
+          src={error ? '/fallbackHeart.svg' : iconSrc}
+          width={24}
+        />
+        <p>
+          <span className={styles['business-name']}>{business.name}</span>
+          {!!business.type ? <span>{` ⸱ ${business.type}`}</span> : null}
+          {!!business.phone ? <span>{business.phone}</span> : null}
+        </p>
+        <span className={styles['list-icon']}>
+          <svg height={20} width={20}>
+            <use href="/icons.svg#arrowUpRight" />
+          </svg>
+        </span>
       </a>
-      {' ⸱ '}
-      <a href={`tel:+${business.phone}`}>{business.phone}</a>
     </li>
   );
 };
@@ -134,7 +171,12 @@ const ProfileList = (props: { userId: string }) => {
     userId: props.userId,
   });
 
-  if (isLoading) return <LoadingSpinner size={28} />;
+  if (isLoading)
+    return (
+      <div className={styles['empty-list']}>
+        <LoadingSpinner size={28} />
+      </div>
+    );
 
   if (!data || data.length === 0)
     return (

@@ -12,10 +12,11 @@ generator client {
 }
 
 model Business {
-    id     String @id @default(cuid())
+    id     String  @id @default(cuid())
     name   String
+    type   String?
     url    String
-    phone  String
+    phone  String?
     userId String
 
     @@index([userId])

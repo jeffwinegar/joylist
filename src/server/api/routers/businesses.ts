@@ -73,7 +73,7 @@ export const businessesRouter = createTRPCRouter({
     .input(businessValidationSchema)
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.userId;
-      const { name, url, phone } = input;
+      const { name, type, url, phone } = input;
 
       const { success } = await ratelimit.limit(userId);
 
@@ -83,6 +83,7 @@ export const businessesRouter = createTRPCRouter({
         data: {
           userId,
           name,
+          type,
           url,
           phone,
         },
