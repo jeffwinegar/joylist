@@ -15,7 +15,8 @@ const config = {
       },
       {
         protocol: 'https',
-        hostname: 'icons.duckduckgo.com',
+        hostname: 's2.googleusercontent.com',
+        pathname: '/s2/favicons',
       },
     ],
   },

@@ -130,9 +130,8 @@ const AddBusinessForm = () => {
 
 const BusinessView = (props: BusinessWithUser) => {
   const { business } = props;
-  const iconSrc = `https://icons.duckduckgo.com/ip3/${
-    new URL(business.url).hostname
-  }.ico`;
+  const hostname = new URL(business.url).hostname;
+  const iconSrc = `https://s2.googleusercontent.com/s2/favicons?domain=${hostname}&sz=128`;
   const [error, setError] = React.useState(false);
 
   return (
