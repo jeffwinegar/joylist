@@ -34,14 +34,14 @@
 .primary-button {
   border: solid 2px var(--surface-secondary-subtle);
 }
-.primary-button:where(:hover, :active) {
+.primary-button:is(:hover, :active) {
   background-color: var(--surface-secondary-shy);
 }
 
 .secondary-button {
   border: none;
 }
-.secondary-button:where(:hover, :active) {
+.secondary-button:is(:hover, :active) {
   background-color: var(--surface-secondary-shy);
 }
 

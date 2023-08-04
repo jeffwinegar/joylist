@@ -28,12 +28,13 @@
   border-radius: 4em;
   color: var(--text-primary);
   cursor: pointer;
+  font-weight: 500;
   line-height: 2rem;
   transition: background-color 0.25s ease;
 }
-.share-button:where(:hover, :active),
-.list-editor summary:where(:hover, :active) {
-  background-color: var(--surface-secondary-subtle);
+.share-button:is(:hover, :active),
+.list-editor summary:is(:hover, :active) {
+  background-color: var(--surface-secondary);
 }
 
 .share-button {
