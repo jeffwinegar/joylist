@@ -4,7 +4,7 @@ import { createServerSideHelpers } from '@trpc/react-query/server';
 import type { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import React from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
@@ -25,10 +25,10 @@ const CopyURLToClipboardButton = () => {
     typeof window !== 'undefined' && window.location.origin
       ? window.location.origin
       : '';
-  const router = useRouter();
+  const pathname = usePathname();
 
   const copy = async () => {
-    await navigator.clipboard.writeText(`${baseUrl}${router.asPath}`);
+    await navigator.clipboard.writeText(`${baseUrl}${pathname}`);
 
     toast.success('Copied to clipboard!', {
       id: 'clipboard',

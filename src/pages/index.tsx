@@ -1,4 +1,29 @@
+import React from 'react';
 import styles from './index.module.css';
+import { useRouter } from 'next/navigation';
+
+const UserSearch = () => {
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const router = useRouter();
+
+  const onSearch = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    const encodedSearchQuery = encodeURI(searchQuery);
+    router.push(`/search?q=${encodedSearchQuery}`);
+  };
+
+  return (
+    <form onSubmit={onSearch}>
+      <input
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Find a friend"
+        type="text"
+        value={searchQuery}
+      />
+    </form>
+  );
+};
 
 export default function Home() {
   return (
@@ -15,6 +40,9 @@ export default function Home() {
             </p>
           </article>
         </div>
+      </section>
+      <section>
+        <UserSearch />
       </section>
     </main>
   );
