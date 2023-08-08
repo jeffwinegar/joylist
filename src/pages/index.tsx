@@ -1,48 +1,45 @@
-import React from 'react';
+import { SignUpButton } from '@clerk/nextjs';
+import { UserSearch } from '~/components/userSearch';
 import styles from './index.module.css';
-import { useRouter } from 'next/navigation';
-
-const UserSearch = () => {
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const router = useRouter();
-
-  const onSearch = (event: React.FormEvent) => {
-    event.preventDefault();
-
-    const encodedSearchQuery = encodeURI(searchQuery);
-    router.push(`/search?q=${encodedSearchQuery}`);
-  };
-
-  return (
-    <form onSubmit={onSearch}>
-      <input
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Find a friend"
-        type="text"
-        value={searchQuery}
-      />
-    </form>
-  );
-};
+import Link from 'next/link';
 
 export default function Home() {
   return (
     <main>
       <section className={styles['hero-section']}>
-        <div className={styles['container']}>
-          <article className={styles['hero-content']}>
-            <h1>This is a heading that will be replaced soon</h1>
+        <div className={styles['pitch-container']}>
+          <article className={styles['pitch-content']}>
+            <h1 className={styles['pitch-heading']}>
+              A simple way to show you care when words are insufficient.
+            </h1>
             <p>
-              Some copy lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Obcaecati minima rem alias consequuntur quaerat ipsam libero quo!
-              Vero, aliquid quae blanditiis laborum, animi natus, maxime ea
-              deleniti voluptatem eius ratione.
+              Searching for something perfect that will light up your loved
+              one's face with sheer delight? Take the guesswork out of knowing
+              what to get a friend, acquaintance or loved one with this ultimate
+              reference tool designed to streamline gift giving with a happiness
+              guarantee.
             </p>
+
+            <UserSearch />
           </article>
         </div>
       </section>
-      <section>
-        <UserSearch />
+      <section className={styles['pitch-section']}>
+        <div className={styles['pitch-container']}>
+          <article className={styles['pitch-content']}>
+            <h2 className={styles['pitch-heading']}>
+              Create and customize your JoyList in minutes
+            </h2>
+            <p>
+              List what you love so others can love you back. Add your favorite
+              places, services or activities and share your profile.
+            </p>
+
+            <Link className={styles['primary-button']} href={'/sign-up'}>
+              Get started for free
+            </Link>
+          </article>
+        </div>
       </section>
     </main>
   );

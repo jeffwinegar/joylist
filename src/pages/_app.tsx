@@ -14,7 +14,10 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <ClerkProvider {...pageProps}>
       <Head>
         <title>JoyList</title>
-        <meta name="description" content="Give the right gift." />
+        <meta
+          name="description"
+          content="Take the guesswork out of finding the perfect gift."
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <style jsx global>{`
