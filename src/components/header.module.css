@@ -13,9 +13,11 @@
 }
 
 .logo-mark {
+  color: currentColor;
   font-size: 1.25rem;
   font-weight: 500;
   letter-spacing: 0.125ex;
+  text-decoration: none;
 }
 
 .primary-button,

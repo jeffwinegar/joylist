@@ -6,11 +6,14 @@ import {
   UserButton,
 } from '@clerk/nextjs';
 import styles from './header.module.css';
+import Link from 'next/link';
 
 export function Header() {
   return (
     <header className={styles.content}>
-      <span className={styles['logo-mark']}>JoyList</span>
+      <Link className={styles['logo-mark']} href="/">
+        JoyList
+      </Link>
       <span className={styles['user-controls']}>
         <SignedIn>
           <UserButton />
