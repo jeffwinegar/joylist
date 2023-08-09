@@ -5,10 +5,12 @@ import {
   SignedOut,
   UserButton,
 } from '@clerk/nextjs';
-import styles from './header.module.css';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import styles from './header.module.css';
 
 export function Header() {
+  const pathname = usePathname();
   return (
     <header className={styles.content}>
       <Link className={styles['logo-mark']} href="/">
@@ -16,7 +18,7 @@ export function Header() {
       </Link>
       <span className={styles['user-controls']}>
         <SignedIn>
-          <UserButton />
+          <UserButton afterSignOutUrl={pathname} />
         </SignedIn>
         <SignedOut>
           <SignUpButton mode="modal">
