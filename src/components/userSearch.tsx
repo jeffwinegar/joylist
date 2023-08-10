@@ -1,9 +1,12 @@
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
 import styles from './userSearch.module.css';
 
 export const UserSearch = () => {
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const searchParams = useSearchParams();
+  const [searchQuery, setSearchQuery] = React.useState(
+    searchParams ? searchParams.get('q') || '' : ''
+  );
   const router = useRouter();
 
   const onSearch = (event: React.FormEvent) => {

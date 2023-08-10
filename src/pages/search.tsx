@@ -1,24 +1,84 @@
+import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
-import { api } from '~/utils/api';
+import { LoadingSpinner } from '~/components/loading';
+import { UserSearch } from '~/components/userSearch';
+import { api, type RouterOutputs } from '~/utils/api';
+import styles from './search.module.css';
+import Link from 'next/link';
+
+type User = RouterOutputs['profile']['getUsersBySearch'][number];
+
+const UserView = (props: User) => {
+  // required in Clerk so these should never be empty
+  const username = props.username ?? '';
+  const firstName = props.firstName ?? '';
+  const lastName = props.lastName ?? '';
+
+  return (
+    <li key={props.id}>
+      <Link className={styles['list-item']} href={`/${username}`}>
+        <span className={styles['user-image']}>
+          <Image
+            alt={`${firstName}'s profile image`}
+            height={48}
+            src={props.imageUrl}
+            width={48}
+          />
+        </span>
+        <p>
+          <span className={styles['username']}>{username}</span>
+          <span
+            className={styles['full-name']}
+          >{`${firstName} ${lastName}`}</span>
+        </p>
+      </Link>
+    </li>
+  );
+};
 
 const SearchResults = () => {
-  const searchParam = useSearchParams();
-  const query = searchParam ? searchParam.get('q') || '' : '';
+  const searchParams = useSearchParams();
+  const query = searchParams ? searchParams.get('q') || '' : '';
 
   const { data, isLoading } = api.profile.getUsersBySearch.useQuery({ query });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className={styles['empty-list']}>
+        <LoadingSpinner size={28} />
+      </div>
+    );
 
-  if (!data || data.length === 0) return <div>NO RESULTS</div>;
+  if (!data || data.length === 0)
+    return (
+      <div className={styles['empty-list']}>
+        <span>No user found</span>
+      </div>
+    );
 
-  return <ul>{data.map((user) => user.username)}</ul>;
+  return (
+    <ul className={styles.list} role="list">
+      {data.map((fullListing) => (
+        <UserView key={fullListing.id} {...fullListing} />
+      ))}
+    </ul>
+  );
 };
 
 export default function SearchPage() {
   return (
     <main>
-      <h1>Search Results Page</h1>
-      <SearchResults />
+      <section>
+        <div className={styles.wrapper}>
+          <div className={styles.container}>
+            <h1 className={styles['primary-heading']}>Search Results</h1>
+            <UserSearch />
+          </div>
+        </div>
+        <div className={styles.container}>
+          <SearchResults />
+        </div>
+      </section>
     </main>
   );
 }
