@@ -142,14 +142,16 @@ const BusinessView = (props: BusinessWithUser) => {
         rel="noopener noreferrer"
         target="_blank"
       >
-        <Image
-          alt="business favicon"
-          height={32}
-          onError={() => setError(true)}
-          priority={true}
-          src={error ? '/fallbackHeart.svg' : iconSrc}
-          width={32}
-        />
+        <span className={styles['business-icon']}>
+          <Image
+            alt="business favicon"
+            height={32}
+            onError={() => setError(true)}
+            priority={true}
+            src={error ? '/fallbackHeart.svg' : iconSrc}
+            width={32}
+          />
+        </span>
         <p>
           <span className={styles['business-name']}>{business.name}</span>
           {!!business.type ? <span>{` ⸱ ${business.type}`}</span> : null}
