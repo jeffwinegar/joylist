@@ -5,7 +5,7 @@ import type { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import React from 'react';
+import { useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import superjson from 'superjson';
@@ -132,7 +132,7 @@ const BusinessView = (props: BusinessWithUser) => {
   const { business } = props;
   const hostname = new URL(business.url).hostname;
   const iconSrc = `https://s2.googleusercontent.com/s2/favicons?domain=${hostname}&sz=128`;
-  const [error, setError] = React.useState(false);
+  const [error, setError] = useState(false);
 
   return (
     <li key={business.id}>

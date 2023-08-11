@@ -38,7 +38,8 @@ const UserView = (props: User) => {
 
 const SearchResults = () => {
   const searchParams = useSearchParams();
-  const query = searchParams ? searchParams.get('q') || '' : '';
+  const queryParam = searchParams ? searchParams.get('q') : null;
+  const query = queryParam ?? '';
 
   const { data, isLoading } = api.profile.getUsersBySearch.useQuery({ query });
 
@@ -52,7 +53,7 @@ const SearchResults = () => {
   if (!data || data.length === 0)
     return (
       <div className={styles['empty-list']}>
-        <span>No user found</span>
+        <span>No matching users found</span>
       </div>
     );
 
