@@ -26,6 +26,7 @@ export const profileRouter = createTRPCRouter({
     .query(async ({ input }) => {
       const matchingUsers = await clerkClient.users.getUserList({
         query: input.query,
+        limit: 100,
       });
 
       if (!matchingUsers) {
