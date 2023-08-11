@@ -64,6 +64,11 @@ export const businessesRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const businesses = await ctx.prisma.business.findMany({
         where: { userId: input.userId },
+        orderBy: [
+          {
+            name: 'asc',
+          },
+        ],
       });
 
       return addUserDataToBusinesses(businesses);

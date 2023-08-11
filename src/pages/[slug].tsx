@@ -52,7 +52,10 @@ const AddBusinessForm = () => {
   const ctx = api.useContext();
   const { mutate } = api.businesses.create.useMutation({
     onSuccess: () => {
-      void ctx.businesses.getAll.invalidate();
+      toast.success('Business added!', {
+        id: 'addBusiness',
+      });
+      void ctx.businesses.getBusinessesByUserId.invalidate();
     },
   });
   const {
