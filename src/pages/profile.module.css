@@ -167,8 +167,9 @@
   display: flex;
   gap: 1ch;
   padding: 1.25ch 1.5ch;
+  position: relative;
   text-decoration: none;
-  transition: transform 0.25s ease;
+  transition: transform 0.25s cubic-bezier(0, 0.2, 0.5, 2.5);
 }
 .list-item:is(:focus, :hover) {
   transform: scale(1.02);

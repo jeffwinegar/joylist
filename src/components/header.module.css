@@ -51,3 +51,137 @@
   display: flex;
   gap: 0.5rem;
 }
+
+.user-button,
+.user-avatar {
+  border-radius: 50%;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.user-button img,
+.user-avatar img {
+  aspect-ratio: 1;
+  inline-size: 100%;
+  object-fit: cover;
+}
+
+.user-button {
+  background-color: unset;
+  block-size: 2rem;
+  border: 0;
+  inline-size: 2rem;
+  outline: 0;
+  padding: 0;
+}
+.user-button:focus,
+.user-button[data-state='open'] {
+  box-shadow: 0 0 0 3px hsl(227deg, 86%, 77%);
+  transition: box-shadow 0.2s ease;
+}
+
+.user-popover {
+  align-items: stretch;
+  background-color: var(--surface-primary);
+  border-radius: 1rem;
+  box-shadow: 0px 24px 48px hsl(0deg, 0%, 0%, 16%);
+  display: flex;
+  flex-direction: column;
+  font-size: 0.8125rem;
+  inline-size: 23.5rem;
+  justify-content: flex-start;
+  line-height: 1.25;
+  max-inline-size: calc(100vw - 2rem);
+  padding-block: 0.625rem 1.5rem;
+}
+.user-popover[data-state='open'] {
+  animation: slideDownAndFade 0.14s ease;
+}
+.user-popover a {
+  color: currentColor;
+  text-decoration: none;
+}
+.user-popover p {
+  margin: 0;
+}
+
+.user-profile-link,
+.manage-account-button,
+.sign-out-button,
+.user-popover footer {
+  padding-inline: 1.5rem;
+}
+
+.user-profile-link,
+.manage-account-button,
+.sign-out-button {
+  cursor: pointer;
+  padding-block: 0.875rem;
+}
+.user-profile-link:is(:hover, :focus),
+.manage-account-button:is(:hover, :focus),
+.sign-out-button:is(:hover, :focus) {
+  background-color: var(--surface-secondary-shy);
+}
+
+.primary-user-identifier,
+.user-popover footer {
+  font-weight: 500;
+}
+
+.user-profile-link,
+.user-popover footer p {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.user-profile-link {
+  gap: 1rem;
+}
+
+.user-avatar {
+  block-size: 2.75rem;
+  inline-size: 2.75rem;
+}
+
+.primary-user-identifier {
+  font-size: 1.07692307692em;
+}
+
+.manage-account-button,
+.sign-out-button {
+  align-items: center;
+  background-color: unset;
+  border: 0;
+  color: var(--text-secondary);
+  display: inline-flex;
+  gap: 1rem;
+  letter-spacing: 0.05ex;
+  outline: 0;
+}
+
+.manage-account-button svg,
+.sign-out-button svg {
+  color: var(--text-tertiary-soft);
+  flex: 0 0 2.75rem;
+}
+
+.user-popover footer {
+  color: var(--text-tertiary-shy);
+  padding-block-start: 1.5rem;
+}
+.user-popover footer p {
+  gap: 0.25rem;
+}
+
+@keyframes slideDownAndFade {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

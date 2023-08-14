@@ -26,6 +26,7 @@
   --text-primary: var(--color-gray-80);
   --text-secondary: var(--color-gray-60);
   --text-tertiary: var(--color-gray-40);
+  --text-tertiary-shy: var(--color-gray-40-o25);
   --text-tertiary-soft: var(--color-gray-40-o50);
   --text-tertiary-subtle: var(--color-gray-40-o75);
   --text-link: var(--color-blue);
