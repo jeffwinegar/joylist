@@ -54,6 +54,7 @@ const CustomUserButton = () => {
                 <Image
                   alt={`${firstName} ${lastName}`}
                   height={44}
+                  priority={true}
                   src={user.imageUrl}
                   width={44}
                 />
@@ -70,7 +71,6 @@ const CustomUserButton = () => {
               className={styles['manage-account-button']}
               onClick={() => openUserProfile()}
               type="button"
-              tabIndex={-1}
             >
               <svg height={12} width={12}>
                 <use href="/icons.svg#gear" />
@@ -78,11 +78,7 @@ const CustomUserButton = () => {
               Manage account
             </button>
             <SignOutButton signOutOptions={{ sessionId: session?.id }}>
-              <button
-                className={styles['sign-out-button']}
-                type="button"
-                tabIndex={-1}
-              >
+              <button className={styles['sign-out-button']} type="button">
                 <svg height={12} width={12}>
                   <use href="/icons.svg#signOut" />
                 </svg>

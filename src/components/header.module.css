@@ -115,6 +115,7 @@
 .manage-account-button,
 .sign-out-button {
   cursor: pointer;
+  outline: 0;
   padding-block: 0.875rem;
 }
 .user-profile-link:is(:hover, :focus),
@@ -145,6 +146,16 @@
   inline-size: 2.75rem;
 }
 
+.user-preview-text,
+.user-preview-text p {
+  overflow: hidden;
+}
+
+.user-preview-text p {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .primary-user-identifier {
   font-size: 1.07692307692em;
 }
@@ -158,7 +169,6 @@
   display: inline-flex;
   gap: 1rem;
   letter-spacing: 0.05ex;
-  outline: 0;
 }
 
 .manage-account-button svg,
