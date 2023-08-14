@@ -224,24 +224,18 @@ export default function ProfilePage({ username }: { username: string }) {
         <section>
           <div className={styles['user-banner']}></div>
           <div className={styles['user-info']}>
-            <div>
-              <span className={styles['user-image']}>
-                <Image
-                  alt={`${firstName}'s profile image`}
-                  height={100}
-                  priority={true}
-                  src={data.imageUrl}
-                  width={100}
-                />
-              </span>
-              <h1 className={styles.username}>{data.username ?? ''}</h1>
-              <p
-                className={styles['full-name']}
-              >{`${firstName} ${lastName}`}</p>
-            </div>
-            <div>
-              <CopyURLToClipboardButton />
-            </div>
+            <span className={styles['user-image']}>
+              <Image
+                alt={`${firstName}'s profile image`}
+                height={100}
+                priority={true}
+                src={data.imageUrl}
+                width={100}
+              />
+            </span>
+            <h1 className={styles.username}>{data.username ?? ''}</h1>
+            <p className={styles['full-name']}>{`${firstName} ${lastName}`}</p>
+            <CopyURLToClipboardButton />
           </div>
         </section>
         <section className={styles['list-content']}>
