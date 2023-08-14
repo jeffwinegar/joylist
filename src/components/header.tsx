@@ -10,7 +10,6 @@ import {
 } from '@clerk/nextjs';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import styles from './header.module.css';
 import * as Popover from '@radix-ui/react-popover';
 
@@ -20,6 +19,7 @@ const CustomUserButton = () => {
 
   if (!user) return;
   // required in Clerk so these should never be empty
+  const username = user.username ?? '';
   const firstName = user.firstName ?? '';
   const lastName = user.lastName ?? '';
 
@@ -49,10 +49,7 @@ const CustomUserButton = () => {
             side="bottom"
             sideOffset={8}
           >
-            <Link
-              className={styles['user-profile-link']}
-              href={`/${user.username}`}
-            >
+            <Link className={styles['user-profile-link']} href={`/${username}`}>
               <span className={styles['user-avatar']}>
                 <Image
                   alt={`${firstName} ${lastName}`}
@@ -65,7 +62,7 @@ const CustomUserButton = () => {
                 <p
                   className={styles['primary-user-identifier']}
                 >{`${firstName} ${lastName}`}</p>
-                <p>{user.username}</p>
+                <p>{username}</p>
               </span>
             </Link>
 
