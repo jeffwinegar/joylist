@@ -30,7 +30,6 @@ const CustomUserButton = () => {
           <button
             className={styles['user-button']}
             aria-label="User management"
-            type="button"
           >
             <Image
               alt={`${firstName} ${lastName}`}
@@ -49,28 +48,33 @@ const CustomUserButton = () => {
             side="bottom"
             sideOffset={8}
           >
-            <Link className={styles['user-profile-link']} href={`/${username}`}>
-              <span className={styles['user-avatar']}>
-                <Image
-                  alt={`${firstName} ${lastName}`}
-                  height={44}
-                  priority={true}
-                  src={user.imageUrl}
-                  width={44}
-                />
-              </span>
-              <span className={styles['user-preview-text']}>
-                <p
-                  className={styles['primary-user-identifier']}
-                >{`${firstName} ${lastName}`}</p>
-                <p>{username}</p>
-              </span>
-            </Link>
+            <Popover.Close className={styles['sr-only']}>Close</Popover.Close>
+            <Popover.Close asChild>
+              <Link
+                className={styles['user-profile-link']}
+                href={`/${username}`}
+              >
+                <span className={styles['user-avatar']}>
+                  <Image
+                    alt={`${firstName} ${lastName}`}
+                    height={44}
+                    priority={true}
+                    src={user.imageUrl}
+                    width={44}
+                  />
+                </span>
+                <span className={styles['user-preview-text']}>
+                  <p
+                    className={styles['primary-user-identifier']}
+                  >{`${firstName} ${lastName}`}</p>
+                  <p>{username}</p>
+                </span>
+              </Link>
+            </Popover.Close>
 
             <button
               className={styles['manage-account-button']}
               onClick={() => openUserProfile()}
-              type="button"
             >
               <svg height={12} width={12}>
                 <use href="/icons.svg#gear" />
@@ -78,7 +82,7 @@ const CustomUserButton = () => {
               Manage account
             </button>
             <SignOutButton signOutOptions={{ sessionId: session?.id }}>
-              <button className={styles['sign-out-button']} type="button">
+              <button className={styles['sign-out-button']}>
                 <svg height={12} width={12}>
                   <use href="/icons.svg#signOut" />
                 </svg>

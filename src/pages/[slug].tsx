@@ -37,7 +37,7 @@ const CopyURLToClipboardButton = () => {
 
   return (
     <button
-      aria-label="Copy URL"
+      aria-label="Copy URL to clipboard"
       className={styles['share-button']}
       onClick={copy}
     >
