@@ -171,6 +171,7 @@
   letter-spacing: 0.05ex;
 }
 
+.user-profile-link svg,
 .manage-account-button svg,
 .sign-out-button svg {
   color: var(--text-tertiary-soft);

@@ -72,6 +72,17 @@ const CustomUserButton = () => {
               </Link>
             </Popover.Close>
 
+            <Popover.Close asChild>
+              <Link
+                className={styles['user-profile-link']}
+                href={`/${username}`}
+              >
+                <svg height={13} width={13}>
+                  <use href="/icons.svg#heart" />
+                </svg>{' '}
+                My JoyList
+              </Link>
+            </Popover.Close>
             <button
               className={styles['manage-account-button']}
               onClick={() => openUserProfile()}
