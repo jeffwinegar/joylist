@@ -18,7 +18,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           name="description"
           content="Take the guesswork out of finding the perfect gift."
         />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.svg" />
       </Head>
       <style jsx global>{`
         :root {
