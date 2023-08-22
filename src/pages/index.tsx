@@ -8,15 +8,11 @@ export default function Home() {
       <section className={styles['hero-section']}>
         <div className={styles['pitch-container']}>
           <article className={styles['pitch-content']}>
-            <h1 className={styles['pitch-heading']}>
-              A simple way to show you care when words are insufficient.
-            </h1>
+            <h1 className={styles['pitch-heading']}>Gift giving done right!</h1>
             <p>
-              Searching for something perfect that will light up your loved
-              one&apos;s face with sheer delight? Take the guesswork out of
-              knowing what to get a friend, acquaintance or loved one with this
-              ultimate reference tool designed to streamline gift giving with a
-              happiness guarantee.
+              Take the guesswork out of knowing what to get a friend,
+              acquaintance or loved one with this ultimate reference tool
+              designed to streamline gift giving — happiness guaranteed.
             </p>
 
             <UserSearch />

@@ -17,8 +17,10 @@
 }
 
 .pitch-heading {
-  font-size: 3rem;
-  margin-block: 0 calc(1ex / 0.64);
+  font-size: clamp(3.5rem, 6.3vw + 1.6rem, 5rem);
+  line-height: calc(1ex / 0.48);
+  margin-block: 0;
+  text-wrap: balance;
 }
 
 .primary-button {
@@ -39,6 +41,11 @@
 }
 .primary-button:is(:hover, :focus) {
   background-color: hsl(216deg, 100%, 40%);
+}
+
+:where(.pitch-section, .hero-section) p {
+  margin-block-start: calc(1ex / 0.42);
+  text-wrap: balance;
 }
 
 .pitch-section:nth-child(2n) {
