@@ -8,7 +8,7 @@ export default function Home() {
       <section className={styles['hero-section']}>
         <div className={styles['pitch-container']}>
           <article className={styles['pitch-content']}>
-            <h1 className={styles['pitch-heading']}>Gift giving done right!</h1>
+            <h1 className={styles['hero-heading']}>Gift giving done right!</h1>
             <p>
               Take the guesswork out of knowing what to get a friend,
               acquaintance or loved one with this ultimate reference tool

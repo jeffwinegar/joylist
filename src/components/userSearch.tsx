@@ -3,16 +3,18 @@ import { useState } from 'react';
 import styles from './userSearch.module.css';
 
 export const UserSearch = () => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(
-    searchParams ? searchParams.get('q') : ''
+    searchParams && searchParams.has('q') ? searchParams.get('q') : ''
   );
-  const router = useRouter();
 
   const onSearch = (event: React.FormEvent) => {
     event.preventDefault();
 
     if (typeof searchQuery !== 'string') return;
+
+    console.log({ searchQuery });
 
     router.push(`/search?q=${encodeURI(searchQuery)}`);
   };
