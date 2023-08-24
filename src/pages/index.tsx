@@ -1,6 +1,7 @@
 import { UserSearch } from '~/components/userSearch';
 import styles from './index.module.css';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
   return (
@@ -17,6 +18,15 @@ export default function Home() {
 
             <UserSearch />
           </article>
+          <span>
+            <Image
+              alt="Man thinking."
+              height={110}
+              priority={true}
+              src="/thinking.svg"
+              width={100}
+            />
+          </span>
         </div>
       </section>
       <section className={styles['pitch-section']}>
@@ -34,6 +44,15 @@ export default function Home() {
               Get started for free
             </Link>
           </article>
+          <span>
+            <Image
+              alt="Woman carrying a gift."
+              height={101}
+              priority={true}
+              src="/gift.svg"
+              width={68}
+            />
+          </span>
         </div>
       </section>
     </main>
