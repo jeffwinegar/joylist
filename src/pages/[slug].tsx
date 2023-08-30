@@ -150,14 +150,14 @@ const EntryManagePopover = (props: {
   });
 
   return (
-    <button
-      className={styles['entry-dropdown-button']}
-      aria-label="Entry management"
-    >
-      <svg height={20} width={20}>
-        <use href="/icons.svg#kebab" />
-      </svg>
-    </button>
+    // <button
+    //   className={styles['entry-dropdown-button']}
+    //   aria-label="Entry management"
+    // >
+    <svg height={20} width={20}>
+      <use href="/icons.svg#kebab" />
+    </svg>
+    // </button>
     // <Popover.Root>
     //   <Popover.Trigger asChild>
     //     <button
