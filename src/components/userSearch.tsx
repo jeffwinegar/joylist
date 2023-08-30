@@ -23,7 +23,7 @@ export const UserSearch = () => {
     <form className={styles.form} onSubmit={onSearch}>
       <input
         onChange={(e) => setSearchQuery(e.target.value)}
-        type="text"
+        type="search"
         value={searchQuery || ''}
       />
       <button className={styles['primary-button']} type="submit">
