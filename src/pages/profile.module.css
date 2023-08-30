@@ -52,6 +52,7 @@
   padding-inline: 1.25em;
 }
 .list-editor > summary:first-of-type {
+  padding-block: 0.125em 0.25em;
   list-style: none;
 }
 .list-editor > summary::-webkit-details-marker {
@@ -165,10 +166,12 @@
 
 .list {
   align-items: flex-start;
+  border-block-start: solid 1px var(--surface-secondary);
   display: grid;
   gap: 1ch;
   grid-template-columns: repeat(auto-fit, minmax(min(30ch, 100%), 1fr));
   justify-items: flex-start;
+  padding-block-start: 1em;
   padding-inline-start: 0;
 }
 
@@ -258,16 +261,16 @@ a.list-item:is(:focus, :hover) {
   animation: slideDownAndFade 0.14s ease;
 }
 .entry-popover > * {
+  align-items: center;
   background-color: transparent;
   border-radius: 0.75em;
   border: none;
   color: currentColor;
   cursor: pointer;
   display: flex;
-  /* flex-wrap: nowrap; */
-  gap: 1ch;
+  gap: 1rem;
   justify-content: space-between;
-  padding: 0.5ex 1.25ex;
+  padding: 0.8125rem 1rem;
   text-decoration: none;
   transition: background-color 0.25s ease;
 }
@@ -277,6 +280,7 @@ a.list-item:is(:focus, :hover) {
 
 .empty-list {
   align-items: center;
+  border-block-start: solid 1px var(--surface-secondary);
   color: var(--text-tertiary-soft);
   display: flex;
   flex-direction: column;

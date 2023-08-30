@@ -177,7 +177,7 @@ const EntryManagePopover = (props: {
               target="_blank"
             >
               Go to site
-              <svg height={18} width={18}>
+              <svg height={17} width={17}>
                 <use href="/icons.svg#arrowUpRight" />
               </svg>
             </a>
@@ -187,7 +187,7 @@ const EntryManagePopover = (props: {
             type="button"
           >
             Remove
-            <svg height={18} width={18}>
+            <svg height={16} width={16}>
               <use href="/icons.svg#trash" />
             </svg>
           </button>
