@@ -150,58 +150,50 @@ const EntryManagePopover = (props: {
   });
 
   return (
-    // <button
-    //   className={styles['entry-dropdown-button']}
-    //   aria-label="Entry management"
-    // >
-    <svg height={20} width={20}>
-      <use href="/icons.svg#kebab" />
-    </svg>
-    // </button>
-    // <Popover.Root>
-    //   <Popover.Trigger asChild>
-    //     <button
-    //       className={styles['entry-dropdown-button']}
-    //       aria-label="Entry management"
-    //     >
-    //       <svg height={20} width={20}>
-    //         <use href="/icons.svg#kebab" />
-    //       </svg>
-    //     </button>
-    //   </Popover.Trigger>
-    //   <Popover.Portal>
-    //     <Popover.Content
-    //       align="center"
-    //       className={styles['entry-popover']}
-    //       collisionPadding={16}
-    //       side="bottom"
-    //       sideOffset={5}
-    //     >
-    //       <Popover.Close className={styles['sr-only']}>Close</Popover.Close>
-    //       <Popover.Close asChild>
-    //         <a
-    //           href={props.businessUrl}
-    //           rel="noopener noreferrer"
-    //           target="_blank"
-    //         >
-    //           Go to site
-    //           <svg height={17} width={17}>
-    //             <use href="/icons.svg#arrowUpRight" />
-    //           </svg>
-    //         </a>
-    //       </Popover.Close>
-    //       <button
-    //         onClick={() => mutate({ id: props.businessId })}
-    //         type="button"
-    //       >
-    //         Remove
-    //         <svg height={16} width={16}>
-    //           <use href="/icons.svg#trash" />
-    //         </svg>
-    //       </button>
-    //     </Popover.Content>
-    //   </Popover.Portal>
-    // </Popover.Root>
+    <Popover.Root>
+      <Popover.Trigger asChild>
+        <button
+          // className={styles['entry-dropdown-button']}
+          aria-label="Entry management"
+        >
+          <svg height={20} width={20}>
+            <use href="/icons.svg#kebab" />
+          </svg>
+        </button>
+      </Popover.Trigger>
+      <Popover.Portal>
+        <Popover.Content
+          align="center"
+          className={styles['entry-popover']}
+          collisionPadding={16}
+          side="bottom"
+          sideOffset={5}
+        >
+          <Popover.Close className={styles['sr-only']}>Close</Popover.Close>
+          <Popover.Close asChild>
+            <a
+              href={props.businessUrl}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Go to site
+              <svg height={17} width={17}>
+                <use href="/icons.svg#arrowUpRight" />
+              </svg>
+            </a>
+          </Popover.Close>
+          <button
+            onClick={() => mutate({ id: props.businessId })}
+            type="button"
+          >
+            Remove
+            <svg height={16} width={16}>
+              <use href="/icons.svg#trash" />
+            </svg>
+          </button>
+        </Popover.Content>
+      </Popover.Portal>
+    </Popover.Root>
   );
 };
 
