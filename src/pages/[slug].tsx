@@ -153,7 +153,7 @@ const EntryManagePopover = (props: {
     <Popover.Root>
       <Popover.Trigger asChild>
         <button
-          // className={styles['entry-dropdown-button']}
+          className={styles['entry-dropdown-button']}
           aria-label="Entry management"
         >
           <svg height={20} width={20}>
