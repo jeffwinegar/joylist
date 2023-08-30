@@ -96,4 +96,13 @@ export const businessesRouter = createTRPCRouter({
 
       return business;
     }),
+  delete: privateProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const business = await ctx.prisma.business.delete({
+        where: { id: input.id },
+      });
+
+      return business;
+    }),
 });

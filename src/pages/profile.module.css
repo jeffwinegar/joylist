@@ -184,7 +184,7 @@
   text-decoration: none;
   transition: transform 0.25s cubic-bezier(0, 0.2, 0.5, 2.5);
 }
-.list-item:is(:focus, :hover) {
+a.list-item:is(:focus, :hover) {
   transform: scale(1.02);
 }
 
@@ -202,7 +202,8 @@
 }
 
 .list-icon,
-.business-icon {
+.business-icon,
+.entry-dropdown-button {
   align-items: center;
   aspect-ratio: 1;
   block-size: 2rem;
@@ -215,6 +216,7 @@
   color: var(--pallet-primary);
   inline-size: 2rem;
 }
+
 .business-icon img {
   aspect-ratio: 1;
   block-size: auto;
@@ -227,6 +229,52 @@
   font-weight: 600;
 }
 
+.entry-dropdown-button {
+  background-color: var(--surface-secondary-shy);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  inline-size: 2rem;
+  transition: background-color 0.25s ease;
+}
+.entry-dropdown-button:is(:focus, :hover) {
+  background-color: var(--surface-secondary-soft);
+}
+
+.entry-popover {
+  align-items: stretch;
+  background-color: var(--surface-primary);
+  border-radius: 1rem;
+  box-shadow: 0px 12px 24px hsl(0deg, 0%, 0%, 10%);
+  display: flex;
+  flex-direction: column;
+  font-size: 0.875rem;
+  justify-content: flex-start;
+  line-height: 1.25;
+  max-inline-size: calc(100vw - 2rem);
+  padding: 0.5rem;
+}
+.entry-popover[data-state='open'] {
+  animation: slideDownAndFade 0.14s ease;
+}
+.entry-popover > * {
+  background-color: transparent;
+  border-radius: 0.75em;
+  border: none;
+  color: currentColor;
+  cursor: pointer;
+  display: flex;
+  /* flex-wrap: nowrap; */
+  gap: 1ch;
+  justify-content: space-between;
+  padding: 0.5ex 1.25ex;
+  text-decoration: none;
+  transition: background-color 0.25s ease;
+}
+.entry-popover > *:is(:focus, :hover) {
+  background-color: var(--surface-secondary-shy);
+}
+
 .empty-list {
   align-items: center;
   color: var(--text-tertiary-soft);
@@ -236,4 +284,28 @@
   font-weight: 500;
   gap: 0.5rem;
   padding: 2rem;
+}
+
+.sr-only {
+  block-size: 1px;
+  border: 0;
+  clip-path: inset(50%);
+  clip: rect(0 0 0 0);
+  inline-size: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+}
+
+@keyframes slideDownAndFade {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -1,5 +1,6 @@
 import { useUser } from '@clerk/nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
+import * as Popover from '@radix-ui/react-popover';
 import { createServerSideHelpers } from '@trpc/react-query/server';
 import type { GetStaticProps } from 'next';
 import Head from 'next/head';
@@ -18,7 +19,10 @@ import { businessValidationSchema } from '~/utils/businessValidator';
 import styles from './profile.module.css';
 
 type FormSchema = z.infer<typeof businessValidationSchema>;
-type BusinessWithUser = RouterOutputs['businesses']['getAll'][number];
+type BusinessWithUser = {
+  data: RouterOutputs['businesses']['getBusinessesByUserId'][number];
+  isUserProfile: boolean | undefined;
+};
 
 const CopyURLToClipboardButton = () => {
   const baseUrl =
@@ -131,46 +135,143 @@ const AddBusinessForm = () => {
   );
 };
 
-const BusinessView = (props: BusinessWithUser) => {
-  const { business } = props;
+const EntryManagePopover = (props: {
+  businessId: string;
+  businessUrl: string;
+}) => {
+  const ctx = api.useContext();
+  const { mutate } = api.businesses.delete.useMutation({
+    onSuccess: () => {
+      toast.success('Business removed!', {
+        id: 'removeBusiness',
+      });
+      void ctx.businesses.getBusinessesByUserId.invalidate();
+    },
+  });
+
+  return (
+    <Popover.Root>
+      <Popover.Trigger asChild>
+        <button
+          className={styles['entry-dropdown-button']}
+          aria-label="Entry management"
+        >
+          <svg height={20} width={20}>
+            <use href="/icons.svg#kebab" />
+          </svg>
+        </button>
+      </Popover.Trigger>
+      <Popover.Portal>
+        <Popover.Content
+          align="center"
+          className={styles['entry-popover']}
+          collisionPadding={16}
+          side="bottom"
+          sideOffset={5}
+        >
+          <Popover.Close className={styles['sr-only']}>Close</Popover.Close>
+          <Popover.Close asChild>
+            <a
+              href={props.businessUrl}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Go to site
+              <svg height={18} width={18}>
+                <use href="/icons.svg#arrowUpRight" />
+              </svg>
+            </a>
+          </Popover.Close>
+          <button
+            onClick={() => mutate({ id: props.businessId })}
+            type="button"
+          >
+            Remove
+            <svg height={18} width={18}>
+              <use href="/icons.svg#trash" />
+            </svg>
+          </button>
+        </Popover.Content>
+      </Popover.Portal>
+    </Popover.Root>
+  );
+};
+
+const BusinessViewContent = (props: BusinessWithUser) => {
+  const {
+    data: { business },
+    isUserProfile,
+  } = props;
   const hostname = new URL(business.url).hostname;
   const iconSrc = `https://s2.googleusercontent.com/s2/favicons?domain=${hostname}&sz=128`;
   const [error, setError] = useState(false);
 
   return (
-    <li key={business.id}>
-      <a
-        className={styles['list-item']}
-        href={business.url}
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        <span className={styles['business-icon']}>
-          <Image
-            alt="business favicon"
-            height={32}
-            onError={() => setError(true)}
-            priority={true}
-            src={error ? '/fallbackHeart.svg' : iconSrc}
-            width={32}
+    <>
+      <span className={styles['business-icon']}>
+        <Image
+          alt="business favicon"
+          height={32}
+          onError={() => setError(true)}
+          priority={true}
+          src={error ? '/fallbackHeart.svg' : iconSrc}
+          width={32}
+        />
+      </span>
+      <p>
+        <span className={styles['business-name']}>{business.name}</span>
+        {!!business.type ? <span>{` ⸱ ${business.type}`}</span> : null}
+        {!!business.phone ? <span>{business.phone}</span> : null}
+      </p>
+      <span className={styles['list-icon']}>
+        {isUserProfile ? (
+          <EntryManagePopover
+            businessId={business.id}
+            businessUrl={business.url}
           />
-        </span>
-        <p>
-          <span className={styles['business-name']}>{business.name}</span>
-          {!!business.type ? <span>{` ⸱ ${business.type}`}</span> : null}
-          {!!business.phone ? <span>{business.phone}</span> : null}
-        </p>
-        <span className={styles['list-icon']}>
+        ) : (
           <svg height={20} width={20}>
             <use href="/icons.svg#arrowUpRight" />
           </svg>
-        </span>
-      </a>
+        )}
+      </span>
+    </>
+  );
+};
+
+const BusinessView = (props: BusinessWithUser) => {
+  const {
+    data: { business },
+    isUserProfile,
+  } = props;
+
+  if (!isUserProfile)
+    return (
+      <li key={business.id}>
+        <a
+          className={styles['list-item']}
+          href={business.url}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <BusinessViewContent {...props} />
+        </a>
+      </li>
+    );
+
+  return (
+    <li key={business.id}>
+      <span className={styles['list-item']}>
+        <BusinessViewContent {...props} />
+      </span>
     </li>
   );
 };
 
-const ProfileList = (props: { userId: string }) => {
+const ProfileList = (props: {
+  userId: string;
+  isUserProfile: boolean | undefined;
+}) => {
   const { data, isLoading } = api.businesses.getBusinessesByUserId.useQuery({
     userId: props.userId,
   });
@@ -194,9 +295,18 @@ const ProfileList = (props: { userId: string }) => {
 
   return (
     <ul className={styles.list} role="list">
-      {data.map((fullListing) => (
-        <BusinessView key={fullListing.business.id} {...fullListing} />
-      ))}
+      {data.map((fullListing) => {
+        const fullListingWithUserInfo = {
+          data: fullListing,
+          isUserProfile: props.isUserProfile,
+        };
+        return (
+          <BusinessView
+            key={fullListing.business.id}
+            {...fullListingWithUserInfo}
+          />
+        );
+      })}
     </ul>
   );
 };
@@ -213,7 +323,7 @@ export default function ProfilePage({ username }: { username: string }) {
   const firstName = data.firstName ?? '';
   const lastName = data.lastName ?? '';
 
-  const isLoggedInUserProfile = user?.username === username;
+  const isSignedInUserProfile = isSignedIn && user.username === username;
 
   return (
     <>
@@ -240,13 +350,13 @@ export default function ProfilePage({ username }: { username: string }) {
         </section>
         <section className={styles['list-content']}>
           <h2 className={styles['list-heading']}>My JoyList</h2>
-          {isSignedIn && isLoggedInUserProfile ? (
+          {isSignedInUserProfile ? (
             <details className={styles['list-editor']}>
               <summary>Add to your list</summary>
               <AddBusinessForm />
             </details>
           ) : null}
-          <ProfileList userId={data.id} />
+          <ProfileList userId={data.id} isUserProfile={isSignedInUserProfile} />
         </section>
       </main>
     </>
