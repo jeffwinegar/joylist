@@ -225,11 +225,19 @@ const BusinessViewContent = (props: BusinessWithUser) => {
       </p>
       <span className={styles['list-icon']}>
         {isUserProfile ? (
-          <EntryManagePopover
-            businessId={business.id}
-            businessUrl={business.url}
-          />
+          <button
+            className={styles['entry-dropdown-button']}
+            aria-label="Entry management"
+          >
+            <svg height={20} width={20}>
+              <use href="/icons.svg#kebab" />
+            </svg>
+          </button>
         ) : (
+          // <EntryManagePopover
+          //   businessId={business.id}
+          //   businessUrl={business.url}
+          // />
           <svg height={20} width={20}>
             <use href="/icons.svg#arrowUpRight" />
           </svg>
