@@ -223,18 +223,18 @@ const BusinessViewContent = (props: BusinessWithUser) => {
         {!!business.type ? <span>{` ⸱ ${business.type}`}</span> : null}
         {!!business.phone ? <span>{business.phone}</span> : null}
       </p>
-      <span className={styles['list-icon']}>
-        {isUserProfile ? (
-          <EntryManagePopover
-            businessId={business.id}
-            businessUrl={business.url}
-          />
-        ) : (
+      {isUserProfile ? (
+        <EntryManagePopover
+          businessId={business.id}
+          businessUrl={business.url}
+        />
+      ) : (
+        <span className={styles['list-icon']}>
           <svg height={20} width={20}>
             <use href="/icons.svg#arrowUpRight" />
           </svg>
-        )}
-      </span>
+        </span>
+      )}
     </>
   );
 };
