@@ -237,7 +237,6 @@ a.list-item:is(:focus, :hover) {
   border-radius: 50%;
   border: none;
   cursor: pointer;
-  inline-size: 2rem;
   transition: background-color 0.25s ease;
 }
 .entry-dropdown-button:is(:focus, :hover) {

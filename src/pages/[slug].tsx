@@ -191,6 +191,14 @@ const EntryManagePopover = (props: {
               <use href="/icons.svg#trash" />
             </svg>
           </button>
+          <button
+            className={styles['entry-dropdown-button']}
+            aria-label="Entry management"
+          >
+            <svg height={20} width={20}>
+              <use href="/icons.svg#kebab" />
+            </svg>
+          </button>
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>
