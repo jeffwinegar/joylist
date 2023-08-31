@@ -46,6 +46,10 @@
   padding: 0.5rem;
 }
 
+.list-editor {
+  margin-block-end: 1em;
+}
+
 .list-editor > summary {
   font-size: 1rem;
   inline-size: fit-content;
