@@ -240,7 +240,9 @@ a.list-item:is(:focus, :hover) {
   background-color: var(--surface-secondary-shy);
   border-radius: 50%;
   border: none;
+  color: currentColor;
   cursor: pointer;
+  padding: 0;
   transition: background-color 0.25s ease;
 }
 .entry-dropdown-button:is(:focus, :hover) {
