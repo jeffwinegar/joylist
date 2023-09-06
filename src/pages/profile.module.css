@@ -22,104 +22,41 @@
   grid-template-columns: 1fr auto;
 }
 
-.share-button,
-.list-editor > summary {
+.profile-controls {
+  align-self: flex-start;
+  display: inline-flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  grid-column: 2 / 2;
+  grid-row: 1 / 1;
+  flex-wrap: wrap;
+}
+
+.entry-form-dialog-trigger,
+.share-button {
+  align-items: center;
   background-color: var(--surface-secondary-soft);
   border-radius: 4em;
+  border: none;
   color: var(--text-primary);
   cursor: pointer;
+  display: inline-flex;
+  flex-shrink: 0;
   font-weight: 500;
-  line-height: 2rem;
+  inline-size: fit-content;
+  min-block-size: 2.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
   transition: background-color 0.25s ease;
+  white-space: nowrap;
 }
-.share-button:is(:hover, :active),
-.list-editor summary:is(:hover, :active) {
+.entry-form-dialog-trigger:is(:active, :hover),
+.share-button:is(:active, :hover) {
   background-color: var(--surface-secondary);
 }
 
 .share-button {
-  align-self: flex-start;
-  border: none;
-  display: inline-flex;
-  grid-column: 2 / 2;
-  grid-row: 1 / 1;
   padding: 0.5rem;
-}
-
-.list-editor {
-  margin-block-end: 1em;
-}
-
-.list-editor > summary {
-  font-size: 1rem;
-  inline-size: fit-content;
-  padding-inline: 1.25em;
-}
-.list-editor > summary:first-of-type {
-  padding-block: 0.125em 0.25em;
-  list-style: none;
-}
-.list-editor > summary::-webkit-details-marker {
-  display: none;
-}
-
-.list-editor form,
-.form-item {
-  display: grid;
-}
-
-.list-editor form {
-  gap: 0.5rem;
-  margin-block-start: 1rem;
-}
-
-.list-editor button {
-  border-radius: 2rem;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 2.25rem;
-  padding-inline: 1rem;
-  transition: background-color 0.25s ease;
-}
-.list-editor [type='submit'] {
-  background-color: var(--pallet-primary);
-  color: var(--surface-primary);
-  margin-block-start: 0.5rem;
-}
-.list-editor [type='reset'] {
-  background-color: transparent;
-}
-
-.form-item label {
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.05ex;
-  padding-inline: 6px;
-}
-.form-item label > span {
-  color: var(--text-tertiary);
-  font-size: 0.875em;
-}
-
-.list-editor input {
-  border-radius: 6px;
-  border: solid 1px var(--surface-secondary);
-  padding: 0.5rem 0.75rem;
-}
-.list-editor input::placeholder {
-  color: var(--text-tertiary-subtle);
-}
-.list-editor input[aria-invalid='true'] {
-  border-color: var(--pallet-error);
-}
-
-.form-item p {
-  color: var(--pallet-error);
-  font-size: 0.875rem;
-  margin-block: 0;
-  margin-inline-start: 6px;
 }
 
 .user-image {
@@ -165,7 +102,7 @@
 .list-heading {
   font-size: 1.125rem;
   font-weight: 600;
-  margin-block: 0 1rem;
+  margin-block: 0 0.75em;
 }
 
 .list {
@@ -175,6 +112,7 @@
   gap: 1ch;
   grid-template-columns: repeat(auto-fit, minmax(min(30ch, 100%), 1fr));
   justify-items: flex-start;
+  margin-block-start: 0;
   padding-block-start: 1em;
   padding-inline-start: 0;
 }
@@ -283,6 +221,120 @@ a.list-item:is(:focus, :hover) {
   background-color: var(--surface-secondary-shy);
 }
 
+.entry-form-dialog-trigger {
+  font-size: 0.875rem;
+  letter-spacing: 0.05ex;
+  padding-inline: 1.25em;
+}
+
+.entry-form-dialog-overlay {
+  animation: overlayShow 0.15s ease;
+  background-color: hsl(0deg, 0%, 0%, 64%);
+  inset: 0;
+  position: fixed;
+}
+
+.entry-form-dialog-content {
+  animation: contentShow 0.18s ease-out;
+  background-color: var(--surface-primary);
+  border-radius: 1rem;
+  box-shadow: hsl(0deg, 0%, 0%, 16%) 0 24px 48px;
+  inline-size: 55ch;
+  left: 50%;
+  max-inline-size: calc(100vw - 1rem);
+  padding: 2.375rem 2rem;
+  position: fixed;
+  top: 3.125rem;
+  transform: translate(-50%, 0);
+}
+.entry-form-dialog-content :where(h2, p) {
+  margin: 0;
+}
+
+.dialog-close-button {
+  background-color: transparent;
+  border-radius: 0.375rem;
+  border: 0;
+  color: var(--text-secondary);
+  cursor: pointer;
+  line-height: 1;
+  padding: 0.75rem;
+  position: absolute;
+  right: 0.75rem;
+  top: 0.75rem;
+  transition: background-color 0.25s ease;
+}
+.dialog-close-button:is(:hover, :focus) {
+  background-color: var(--surface-secondary-shy);
+}
+
+.entry-form-dialog-content form,
+.form-item {
+  display: grid;
+}
+
+.entry-form-dialog-content form {
+  gap: 0.5rem;
+  margin-block-start: 1rem;
+}
+
+.entry-form-dialog-content button {
+  border-radius: 2rem;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 2.25rem;
+  padding-inline: 1rem;
+  transition: background-color 0.25s ease;
+}
+.entry-form-dialog-content [type='submit'] {
+  background-color: var(--pallet-primary);
+  color: var(--surface-primary);
+  letter-spacing: 0.075ex;
+  margin-block-start: 1.25rem;
+}
+.entry-form-dialog-content [type='reset'] {
+  background-color: transparent;
+  letter-spacing: 0.025ex;
+}
+
+.form-item {
+  border: 0;
+  padding-block-end: 0;
+  padding-inline: 0;
+}
+
+.form-item label {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.05ex;
+  padding-inline: 6px;
+}
+.form-item label > span {
+  color: var(--text-tertiary);
+  font-size: 0.875em;
+}
+
+.form-item input {
+  border-radius: 6px;
+  border: solid 1px var(--surface-secondary);
+  padding: 0.5rem 0.75rem;
+}
+.form-item input::placeholder {
+  color: var(--text-tertiary-subtle);
+}
+.form-item input[aria-invalid='true'] {
+  border-color: var(--pallet-error);
+}
+
+.form-item p {
+  color: var(--pallet-error);
+  font-size: 0.875rem;
+  margin-block: 0;
+  margin-inline-start: 6px;
+}
+
 .empty-list {
   align-items: center;
   border-block-start: solid 1px var(--surface-secondary);
@@ -316,5 +368,25 @@ a.list-item:is(:focus, :hover) {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes overlayShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
   }
 }

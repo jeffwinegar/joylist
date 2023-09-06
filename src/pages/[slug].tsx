@@ -1,6 +1,7 @@
 import { useUser } from '@clerk/nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as Popover from '@radix-ui/react-popover';
+import * as Dialog from '@radix-ui/react-dialog';
 import { createServerSideHelpers } from '@trpc/react-query/server';
 import type { GetStaticProps } from 'next';
 import Head from 'next/head';
@@ -52,10 +53,12 @@ const CopyURLToClipboardButton = () => {
   );
 };
 
-const AddBusinessForm = () => {
+const EntryDialogForm = () => {
+  const [open, setOpen] = useState(false);
   const ctx = api.useContext();
   const { mutate } = api.businesses.create.useMutation({
     onSuccess: () => {
+      setOpen(false);
       toast.success('Business added!', {
         id: 'addBusiness',
       });
@@ -76,62 +79,84 @@ const AddBusinessForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className={styles['form-item']}>
-        <label htmlFor="businessName">Business Name</label>
-        <input
-          aria-invalid={errors.name ? 'true' : 'false'}
-          id="businessName"
-          type="text"
-          {...register('name')}
-        />
-        {!!errors.name && <p role="alert">{errors.name.message}</p>}
-      </div>
+    <Dialog.Root open={open} onOpenChange={setOpen}>
+      <Dialog.Trigger asChild>
+        <button className={styles['entry-form-dialog-trigger']}>
+          Add to list
+        </button>
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Overlay className={styles['entry-form-dialog-overlay']} />
+        <Dialog.Content
+          className={styles['entry-form-dialog-content']}
+          onInteractOutside={() => reset()}
+        >
+          <Dialog.Title>Add new entry</Dialog.Title>
+          <Dialog.Description>
+            Add your favorite place, service or activity to your list.
+          </Dialog.Description>
 
-      <div className={styles['form-item']}>
-        <label htmlFor="businessType">
-          Business Type <span>(Optional)</span>
-        </label>
-        <input
-          aria-invalid={errors.type ? 'true' : 'false'}
-          id="businessType"
-          type="text"
-          {...register('type')}
-        />
-        {!!errors.type && <p role="alert">{errors.type.message}</p>}
-      </div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <fieldset className={styles['form-item']}>
+              <label htmlFor="businessName">Business Name</label>
+              <input
+                aria-invalid={errors.name ? 'true' : 'false'}
+                id="businessName"
+                type="text"
+                {...register('name')}
+              />
+              {!!errors.name && <p role="alert">{errors.name.message}</p>}
+            </fieldset>
 
-      <div className={styles['form-item']}>
-        <label htmlFor="businessWebsite">Website</label>
-        <input
-          aria-invalid={errors.url ? 'true' : 'false'}
-          id="businessWebsite"
-          placeholder="e.g. https://www.joylist.guide"
-          type="text"
-          {...register('url')}
-        />
-        {!!errors.url && <p role="alert">{errors.url.message}</p>}
-      </div>
+            <fieldset className={styles['form-item']}>
+              <label htmlFor="businessType">
+                Business Type <span>(Optional)</span>
+              </label>
+              <input
+                aria-invalid={errors.type ? 'true' : 'false'}
+                id="businessType"
+                type="text"
+                {...register('type')}
+              />
+              {!!errors.type && <p role="alert">{errors.type.message}</p>}
+            </fieldset>
 
-      <div className={styles['form-item']}>
-        <label htmlFor="businessPhone">
-          Phone <span>(Optional)</span>
-        </label>
-        <input
-          aria-invalid={errors.phone ? 'true' : 'false'}
-          id="businessPhone"
-          placeholder="e.g. (555) 555-1234"
-          type="text"
-          {...register('phone')}
-        />
-        {!!errors.phone && <p role="alert">{errors.phone.message}</p>}
-      </div>
+            <fieldset className={styles['form-item']}>
+              <label htmlFor="businessWebsite">Website</label>
+              <input
+                aria-invalid={errors.url ? 'true' : 'false'}
+                id="businessWebsite"
+                placeholder="e.g. https://www.joylist.guide"
+                type="text"
+                {...register('url')}
+              />
+              {!!errors.url && <p role="alert">{errors.url.message}</p>}
+            </fieldset>
 
-      <button type="submit">Add Business</button>
-      <button type="reset" onClick={() => reset()}>
-        Cancel
-      </button>
-    </form>
+            <fieldset className={styles['form-item']}>
+              <label htmlFor="businessPhone">
+                Phone <span>(Optional)</span>
+              </label>
+              <input
+                aria-invalid={errors.phone ? 'true' : 'false'}
+                id="businessPhone"
+                placeholder="e.g. (555) 555-1234"
+                type="text"
+                {...register('phone')}
+              />
+              {!!errors.phone && <p role="alert">{errors.phone.message}</p>}
+            </fieldset>
+
+            <button type="submit">Add Business</button>
+            <Dialog.Close asChild>
+              <button type="reset" onClick={() => reset()}>
+                Cancel
+              </button>
+            </Dialog.Close>
+          </form>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 };
 
@@ -345,17 +370,14 @@ export default function ProfilePage({ username }: { username: string }) {
             </span>
             <h1 className={styles.username}>{data.username ?? ''}</h1>
             <p className={styles['full-name']}>{`${firstName} ${lastName}`}</p>
-            <CopyURLToClipboardButton />
+            <div className={styles['profile-controls']}>
+              {isSignedInUserProfile ? <EntryDialogForm /> : null}
+              <CopyURLToClipboardButton />
+            </div>
           </div>
         </section>
         <section className={styles['list-content']}>
           <h2 className={styles['list-heading']}>My JoyList</h2>
-          {isSignedInUserProfile ? (
-            <details className={styles['list-editor']}>
-              <summary>Add to your list</summary>
-              <AddBusinessForm />
-            </details>
-          ) : null}
           <ProfileList userId={data.id} isUserProfile={isSignedInUserProfile} />
         </section>
       </main>
