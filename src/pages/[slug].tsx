@@ -69,7 +69,7 @@ const EntryManagePopover = (props: {
     },
   });
 
-  const { data, isLoading, refetch } = api.businesses.getBusinessById.useQuery(
+  const { data, refetch } = api.businesses.getBusinessById.useQuery(
     { businessId },
     { enabled: false }
   );
