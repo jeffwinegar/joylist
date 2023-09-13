@@ -1,0 +1,66 @@
+.form,
+.form-item {
+  display: grid;
+}
+
+.form {
+  gap: 0.5rem;
+  margin-block-start: 1rem;
+}
+
+.form button {
+  border-radius: 2rem;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 2.25rem;
+  padding-inline: 1rem;
+  transition: background-color 0.25s ease;
+}
+.form [type='submit'] {
+  background-color: var(--pallet-primary);
+  color: var(--surface-primary);
+  letter-spacing: 0.075ex;
+  margin-block-start: 1.25rem;
+}
+.form [type='reset'] {
+  background-color: transparent;
+  letter-spacing: 0.025ex;
+}
+
+.form-item {
+  border: 0;
+  padding-block-end: 0;
+  padding-inline: 0;
+}
+
+.form-item label {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.05ex;
+  padding-inline: 6px;
+}
+.form-item label > span {
+  color: var(--text-tertiary);
+  font-size: 0.875em;
+}
+
+.form-item input {
+  border-radius: 6px;
+  border: solid 1px var(--surface-secondary);
+  padding: 0.5rem 0.75rem;
+}
+.form-item input::placeholder {
+  color: var(--text-tertiary-subtle);
+}
+.form-item input[aria-invalid='true'] {
+  border-color: var(--pallet-error);
+}
+
+.form-item p {
+  color: var(--pallet-error);
+  font-size: 0.875rem;
+  margin-block: 0;
+  margin-inline-start: 6px;
+}

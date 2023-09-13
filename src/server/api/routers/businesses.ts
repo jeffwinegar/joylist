@@ -59,6 +59,23 @@ export const businessesRouter = createTRPCRouter({
     return addUserDataToBusinesses(businesses);
   }),
 
+  getBusinessById: publicProcedure
+    .input(z.object({ businessId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const business = await ctx.prisma.business.findUnique({
+        where: { id: input.businessId },
+      });
+
+      if (!business) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'No business found',
+        });
+      }
+
+      return business;
+    }),
+
   getBusinessesByUserId: publicProcedure
     .input(z.object({ userId: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -96,6 +113,33 @@ export const businessesRouter = createTRPCRouter({
 
       return business;
     }),
+
+  update: privateProcedure
+    .input(businessValidationSchema.extend({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.userId;
+      const { id, name, type, url, phone } = input;
+
+      const { success } = await ratelimit.limit(userId);
+
+      if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' });
+
+      const business = await ctx.prisma.business.update({
+        where: {
+          id,
+        },
+        data: {
+          userId,
+          name,
+          type,
+          url,
+          phone,
+        },
+      });
+
+      return business;
+    }),
+
   delete: privateProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
