@@ -1,5 +1,8 @@
 import { useUser } from '@clerk/nextjs';
-import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Description as DialogDescription,
+  Title as DialogTitle,
+} from '@radix-ui/react-dialog';
 import * as Popover from '@radix-ui/react-popover';
 import { createServerSideHelpers } from '@trpc/react-query/server';
 import type { GetStaticProps } from 'next';
@@ -7,18 +10,16 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { useForm, type SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import superjson from 'superjson';
-import type { z } from 'zod';
+import { Dialog, DialogContent, DialogTrigger } from '~/components/dialog';
+import { AddEntryForm, UpdateEntryForm } from '~/components/entryForm';
 import { LoadingSpinner } from '~/components/loading';
 import { appRouter } from '~/server/api/root';
 import { prisma } from '~/server/db';
 import { api, type RouterOutputs } from '~/utils/api';
-import { businessValidationSchema } from '~/utils/businessValidator';
 import styles from './profile.module.css';
 
-type FormSchema = z.infer<typeof businessValidationSchema>;
 type BusinessWithUser = {
   data: RouterOutputs['businesses']['getBusinessesByUserId'][number];
   isUserProfile: boolean | undefined;
@@ -52,93 +53,12 @@ const CopyURLToClipboardButton = () => {
   );
 };
 
-const AddBusinessForm = () => {
-  const ctx = api.useContext();
-  const { mutate } = api.businesses.create.useMutation({
-    onSuccess: () => {
-      toast.success('Business added!', {
-        id: 'addBusiness',
-      });
-      void ctx.businesses.getBusinessesByUserId.invalidate();
-    },
-  });
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<FormSchema>({
-    resolver: zodResolver(businessValidationSchema),
-  });
-  const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    mutate(data);
-    reset();
-  };
-
-  return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className={styles['form-item']}>
-        <label htmlFor="businessName">Business Name</label>
-        <input
-          aria-invalid={errors.name ? 'true' : 'false'}
-          id="businessName"
-          type="text"
-          {...register('name')}
-        />
-        {!!errors.name && <p role="alert">{errors.name.message}</p>}
-      </div>
-
-      <div className={styles['form-item']}>
-        <label htmlFor="businessType">
-          Business Type <span>(Optional)</span>
-        </label>
-        <input
-          aria-invalid={errors.type ? 'true' : 'false'}
-          id="businessType"
-          type="text"
-          {...register('type')}
-        />
-        {!!errors.type && <p role="alert">{errors.type.message}</p>}
-      </div>
-
-      <div className={styles['form-item']}>
-        <label htmlFor="businessWebsite">Website</label>
-        <input
-          aria-invalid={errors.url ? 'true' : 'false'}
-          id="businessWebsite"
-          placeholder="e.g. https://www.joylist.guide"
-          type="text"
-          {...register('url')}
-        />
-        {!!errors.url && <p role="alert">{errors.url.message}</p>}
-      </div>
-
-      <div className={styles['form-item']}>
-        <label htmlFor="businessPhone">
-          Phone <span>(Optional)</span>
-        </label>
-        <input
-          aria-invalid={errors.phone ? 'true' : 'false'}
-          id="businessPhone"
-          placeholder="e.g. (555) 555-1234"
-          type="text"
-          {...register('phone')}
-        />
-        {!!errors.phone && <p role="alert">{errors.phone.message}</p>}
-      </div>
-
-      <button type="submit">Add Business</button>
-      <button type="reset" onClick={() => reset()}>
-        Cancel
-      </button>
-    </form>
-  );
-};
-
 const EntryManagePopover = (props: {
   businessId: string;
   businessUrl: string;
 }) => {
+  const [open, setOpen] = useState(false);
+  const { businessId, businessUrl } = props;
   const ctx = api.useContext();
   const { mutate } = api.businesses.delete.useMutation({
     onSuccess: () => {
@@ -149,12 +69,18 @@ const EntryManagePopover = (props: {
     },
   });
 
+  const { data, refetch } = api.businesses.getBusinessById.useQuery(
+    { businessId },
+    { enabled: false }
+  );
+
   return (
-    <Popover.Root>
+    <Popover.Root open={open} onOpenChange={setOpen}>
       <Popover.Trigger asChild>
         <button
-          className={styles['entry-dropdown-button']}
           aria-label="Entry management"
+          className={styles['entry-popover-button']}
+          onClick={() => refetch()}
         >
           <svg height={20} width={20}>
             <use href="/icons.svg#kebab" />
@@ -171,23 +97,38 @@ const EntryManagePopover = (props: {
         >
           <Popover.Close className={styles['sr-only']}>Close</Popover.Close>
           <Popover.Close asChild>
-            <a
-              href={props.businessUrl}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
+            <a href={businessUrl} rel="noopener noreferrer" target="_blank">
               Go to site
-              <svg height={17} width={17}>
+              <svg height={16} width={16}>
                 <use href="/icons.svg#arrowUpRight" />
               </svg>
             </a>
           </Popover.Close>
-          <button
-            onClick={() => mutate({ id: props.businessId })}
-            type="button"
-          >
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <button disabled={!data}>
+                Edit
+                <svg height={14} width={14}>
+                  <use href="/icons.svg#pencil" />
+                </svg>
+              </button>
+            </DialogTrigger>
+            <DialogContent onInteractOutside={() => setOpen(false)}>
+              {!!data && (
+                <>
+                  <DialogTitle>Edit entry</DialogTitle>
+                  <DialogDescription>
+                    Make changes to your favorite place, service or activity.
+                  </DialogDescription>
+                  <UpdateEntryForm business={data} setOpen={setOpen} />
+                </>
+              )}
+            </DialogContent>
+          </Dialog>
+          <button onClick={() => mutate({ id: businessId })} type="button">
             Remove
-            <svg height={16} width={16}>
+            <svg height={14} width={14}>
               <use href="/icons.svg#trash" />
             </svg>
           </button>
@@ -312,6 +253,7 @@ const ProfileList = (props: {
 };
 
 export default function ProfilePage({ username }: { username: string }) {
+  const [open, setOpen] = useState(false);
   const { isSignedIn, user } = useUser();
   const { data } = api.profile.getUserByUsername.useQuery({
     username,
@@ -345,17 +287,29 @@ export default function ProfilePage({ username }: { username: string }) {
             </span>
             <h1 className={styles.username}>{data.username ?? ''}</h1>
             <p className={styles['full-name']}>{`${firstName} ${lastName}`}</p>
-            <CopyURLToClipboardButton />
+            <div className={styles['user-controls']}>
+              {isSignedInUserProfile ? (
+                <Dialog open={open} onOpenChange={setOpen}>
+                  <DialogTrigger asChild>
+                    <button className={styles['add-entry-button']}>
+                      Add to list
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogTitle>Add new entry</DialogTitle>
+                    <DialogDescription>
+                      Add your favorite place, service or activity to your list.
+                    </DialogDescription>
+                    <AddEntryForm setOpen={setOpen} />
+                  </DialogContent>
+                </Dialog>
+              ) : null}
+              <CopyURLToClipboardButton />
+            </div>
           </div>
         </section>
         <section className={styles['list-content']}>
           <h2 className={styles['list-heading']}>My JoyList</h2>
-          {isSignedInUserProfile ? (
-            <details className={styles['list-editor']}>
-              <summary>Add to your list</summary>
-              <AddBusinessForm />
-            </details>
-          ) : null}
           <ProfileList userId={data.id} isUserProfile={isSignedInUserProfile} />
         </section>
       </main>
