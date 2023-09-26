@@ -95,7 +95,13 @@ export const AddEntryForm = ({
 
       <button type="submit">Add Business</button>
       <DialogClose asChild>
-        <button type="reset" onClick={() => reset()}>
+        <button
+          type="reset"
+          onClick={() => {
+            reset();
+            setOpen(false);
+          }}
+        >
           Cancel
         </button>
       </DialogClose>
@@ -113,12 +119,31 @@ export const UpdateEntryForm = ({
   const ctx = api.useContext();
 
   const { mutate } = api.businesses.update.useMutation({
-    onSuccess: () => {
+    onMutate: async (newData) => {
+      await ctx.businesses.getBusinessById.cancel();
+
+      const prevData = ctx.businesses.getBusinessById.getData();
+
+      ctx.businesses.getBusinessById.setData(
+        { businessId: newData.id },
+        (oldData) => (oldData ? { ...oldData, ...newData } : undefined)
+      );
+
+      return { prevData };
+    },
+    onError: (_err, newData, context) => {
+      ctx.businesses.getBusinessById.setData(
+        { businessId: newData.id },
+        context?.prevData
+      );
+    },
+    onSettled: () => {
+      void ctx.businesses.getBusinessById.invalidate();
+      void ctx.businesses.getBusinessesByUserId.invalidate();
       setOpen(false);
       toast.success('Business updated!', {
         id: 'updateBusiness',
       });
-      void ctx.businesses.getBusinessesByUserId.invalidate();
     },
   });
 
@@ -195,7 +220,13 @@ export const UpdateEntryForm = ({
         Save changes
       </button>
       <DialogClose asChild>
-        <button type="reset" onClick={() => reset()}>
+        <button
+          type="reset"
+          onClick={() => {
+            reset();
+            setOpen(false);
+          }}
+        >
           Cancel
         </button>
       </DialogClose>
