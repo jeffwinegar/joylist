@@ -1,5 +1,6 @@
 :root {
   --color-blue: hsl(216deg, 100%, 50%);
+  --color-blue-o50: hsl(216deg, 100%, 50%, 50%);
 
   --color-white: hsl(0deg, 0%, 100%);
   --color-gray-20: hsl(209deg, 38%, 89%);
@@ -14,6 +15,7 @@
   --color-gray-80: hsl(240deg, 6%, 3%);
 
   --pallet-primary: var(--color-blue);
+  --pallet-primary-soft: var(--color-blue-o50);
   --pallet-secondary: hsl(330deg, 100%, 71%);
   --pallet-error: hsl(4deg, 85%, 46%);
 

@@ -28,6 +28,9 @@
   background-color: transparent;
   letter-spacing: 0.025ex;
 }
+.form button:disabled {
+  background-color: var(--pallet-primary-soft);
+}
 
 .form-item {
   border: 0;
